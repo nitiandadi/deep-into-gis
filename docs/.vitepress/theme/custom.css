@@ -81,3 +81,76 @@
   color: var(--vp-c-text-3);
   font-size: 14px;
 }
+
+/* About page: keep the content Markdown-first and only enhance key blocks. */
+.about-page .VPHomeHero {
+  padding-bottom: 56px;
+}
+
+.about-page .VPHomeFeatures {
+  padding-bottom: 48px;
+}
+
+.about-page .VPHomeContent {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.about-page .vp-doc h2 {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.about-page .vp-doc h3 {
+  margin-top: 32px;
+  padding-left: 14px;
+  border-left: 3px solid var(--vp-c-brand-1);
+}
+
+.about-page .vp-doc blockquote {
+  padding: 18px 22px;
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: linear-gradient(90deg, var(--vp-c-brand-soft), transparent);
+}
+
+.about-chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 28px 0;
+  padding: 20px;
+  overflow-x: auto;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 14px;
+  background: var(--vp-c-bg-soft);
+}
+
+.about-chain span {
+  flex: none;
+  padding: 9px 12px;
+  color: var(--vp-c-text-1);
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+}
+
+.about-chain i {
+  color: var(--vp-c-brand-1);
+  font-style: normal;
+}
+
+@media (max-width: 640px) {
+  .about-page .VPHomeContent {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .about-chain {
+    justify-content: flex-start;
+  }
+}
