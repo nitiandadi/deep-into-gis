@@ -1,18 +1,11 @@
 ---
 title: 关于
+description: 我的 GIS 开发经历、技术方向，以及创建这个博客的初衷。
+layout: page
 ---
 
-# 关于这个博客
+<script setup>
+import AboutPage from './.vitepress/theme/components/AboutPage.vue'
+</script>
 
-你好，我是一名 GIS 开发者。
-
-这里主要记录 GIS 全链路开发：既关注空间数据、算法和服务，也关注前端渲染、系统架构，以及 AI 为空间技术带来的新工具。
-
-
-
-## 内容方向
-
-- GIS 全链路与底层原理
-- AI × GIS 与工程方法
-- 完整项目复盘
-- 行业观察与开发随笔
+<AboutPage />
