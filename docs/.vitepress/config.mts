@@ -33,7 +33,8 @@ export default defineConfig({
           items: [
             { text: '全部专题', link: '/topics/' },
             { text: 'GIS 全链路', link: '/topics/gis-full-stack' },
-            { text: 'AI × GIS', link: '/topics/ai-gis' }
+            { text: 'AI × GIS', link: '/topics/ai-gis' },
+            { text: 'GIS 行业图谱', link: '/topics/gis-industry' }
           ]
         }
       ]
