@@ -4,6 +4,7 @@ export default defineConfig({
   lang: 'zh-CN',
   title: '图层深处',
   description: '记录 GIS 全链路开发、空间算法与 AI × GIS 实践',
+  appearance: 'dark',
   cleanUrls: true,
   lastUpdated: true,
   head: [['meta', { name: 'theme-color', content: '#0c7c66' }]],
