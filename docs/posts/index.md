@@ -8,6 +8,10 @@ description: 图层深处的全部文章
 沿着数据、算法、服务、渲染与智能化这条主线，持续整理 GIS 开发中的原理和实践。
 
 <div class="post-list">
+  <a class="post-card" href="/posts/spatial-data-to-map">
+    <strong>空间数据如何流过一个 GIS 系统</strong>
+    <span>GIS 全链路 · 全链路总览 · 约 18 分钟</span>
+  </a>
   <a class="post-card" href="/posts/spatial-index">
     <strong>理解空间索引：为什么地图查询可以很快</strong>
     <span>GIS 全链路 · 空间算法 · 约 8 分钟</span>

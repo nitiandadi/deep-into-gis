@@ -22,6 +22,7 @@ export default defineConfig({
           text: '开始阅读',
           items: [
             { text: '全部文章', link: '/posts/' },
+            { text: '空间数据如何流过系统', link: '/posts/spatial-data-to-map' },
             { text: '理解空间索引', link: '/posts/spatial-index' },
             { text: 'AI × GIS 从哪里开始', link: '/posts/ai-gis-start' }
           ]
