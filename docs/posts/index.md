@@ -8,6 +8,10 @@ description: 图层深处的全部文章
 沿着数据、算法、服务、渲染与智能化这条主线，持续整理 GIS 开发中的原理和实践。
 
 <div class="post-list">
+  <a class="post-card" href="/posts/offline-vs-online-gis">
+    <strong>离线处理链路和在线请求链路究竟有什么不同</strong>
+    <span>GIS 全链路 · 系统架构 · 约 17 分钟</span>
+  </a>
   <a class="post-card" href="/posts/gis-system-responsibilities">
     <strong>GIS 系统中的五种责任：数据、处理、分析、服务与渲染</strong>
     <span>GIS 全链路 · 系统职责 · 约 15 分钟</span>

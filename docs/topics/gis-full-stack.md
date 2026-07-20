@@ -10,7 +10,7 @@
 
 1. [空间数据如何流过一个 GIS 系统](/posts/spatial-data-to-map)
 2. [GIS 系统中的数据、处理、分析、服务与渲染分别负责什么](/posts/gis-system-responsibilities)
-3. 离线处理链路与在线请求链路有什么区别
+3. [离线处理链路与在线请求链路有什么区别](/posts/offline-vs-online-gis)
 
 #### B. 系统形态总览
 
@@ -35,3 +35,4 @@
 
 - [空间数据如何流过一个 GIS 系统](/posts/spatial-data-to-map)
 - [GIS 系统中的五种责任：数据、处理、分析、服务与渲染](/posts/gis-system-responsibilities)
+- [离线处理链路和在线请求链路究竟有什么不同](/posts/offline-vs-online-gis)

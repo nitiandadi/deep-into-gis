@@ -24,6 +24,7 @@ export default defineConfig({
             { text: '全部文章', link: '/posts/' },
             { text: '空间数据如何流过系统', link: '/posts/spatial-data-to-map' },
             { text: 'GIS 系统中的五种责任', link: '/posts/gis-system-responsibilities' },
+            { text: '离线处理与在线请求', link: '/posts/offline-vs-online-gis' },
             { text: '理解空间索引', link: '/posts/spatial-index' },
             { text: 'AI × GIS 从哪里开始', link: '/posts/ai-gis-start' }
           ]

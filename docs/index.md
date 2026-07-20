@@ -31,6 +31,10 @@ features:
 ## 最近更新
 
 <div class="post-list">
+  <a class="post-card" href="/posts/offline-vs-online-gis">
+    <strong>离线处理与在线请求究竟有什么不同</strong>
+    <span>从运行时机、性能目标和失败处理理解两条 GIS 链路。</span>
+  </a>
   <a class="post-card" href="/posts/gis-system-responsibilities">
     <strong>GIS 系统中的五种责任</strong>
     <span>分清数据、处理、分析、服务与渲染的职责和边界。</span>
