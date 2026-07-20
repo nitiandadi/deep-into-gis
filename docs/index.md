@@ -31,19 +31,19 @@ features:
 ## 最近更新
 
 <div class="post-list">
-  <a class="post-card" href="/posts/offline-vs-online-gis">
+  <a class="post-card" href="./posts/offline-vs-online-gis">
     <strong>离线处理与在线请求究竟有什么不同</strong>
     <span>从运行时机、性能目标和失败处理理解两条 GIS 链路。</span>
   </a>
-  <a class="post-card" href="/posts/gis-system-responsibilities">
+  <a class="post-card" href="./posts/gis-system-responsibilities">
     <strong>GIS 系统中的五种责任</strong>
     <span>分清数据、处理、分析、服务与渲染的职责和边界。</span>
   </a>
-  <a class="post-card" href="/posts/spatial-index">
+  <a class="post-card" href="./posts/spatial-index">
     <strong>理解空间索引：为什么地图查询可以很快</strong>
     <span>从边界框、R-Tree 到工程实践，建立空间索引的直觉。</span>
   </a>
-  <a class="post-card" href="/posts/ai-gis-start">
+  <a class="post-card" href="./posts/ai-gis-start">
     <strong>AI × GIS 应该从哪里开始？</strong>
     <span>避开概念堆叠，从一个可落地的空间任务开始。</span>
   </a>

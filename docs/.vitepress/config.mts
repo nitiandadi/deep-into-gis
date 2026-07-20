@@ -4,6 +4,7 @@ export default defineConfig({
   lang: 'zh-CN',
   title: '图层深处',
   description: '记录 GIS 全链路开发、空间算法与 AI × GIS 实践',
+  base: '/deep-into-gis/',
   appearance: 'dark',
   cleanUrls: true,
   lastUpdated: true,
@@ -43,7 +44,7 @@ export default defineConfig({
       ]
     },
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/' }
+      { icon: 'github', link: 'https://github.com/nitiandadi/deep-into-gis' }
     ],
     search: { provider: 'local' },
     outline: { label: '本页目录', level: [2, 3] },
