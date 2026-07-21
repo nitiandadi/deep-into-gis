@@ -31,6 +31,10 @@ features:
 ## 最近更新
 
 <div class="post-list">
+  <a class="post-card" href="./posts/webgis-service-to-browser-rendering">
+    <strong>WebGIS：从空间数据服务到浏览器渲染的完整链路</strong>
+    <span>沿一次地图视野变化，看空间服务、网络传输与 GPU 怎样共同生成画面。</span>
+  </a>
   <a class="post-card" href="./posts/offline-vs-online-gis">
     <strong>离线处理与在线请求究竟有什么不同</strong>
     <span>从运行时机、性能目标和失败处理理解两条 GIS 链路。</span>
@@ -42,9 +46,5 @@ features:
   <a class="post-card" href="./posts/spatial-index">
     <strong>理解空间索引：为什么地图查询可以很快</strong>
     <span>从边界框、R-Tree 到工程实践，建立空间索引的直觉。</span>
-  </a>
-  <a class="post-card" href="./posts/ai-gis-start">
-    <strong>AI × GIS 应该从哪里开始？</strong>
-    <span>避开概念堆叠，从一个可落地的空间任务开始。</span>
   </a>
 </div>
