@@ -15,7 +15,7 @@
 #### B. 系统形态总览
 
 4. [WebGIS：从空间数据服务到浏览器渲染的完整链路](/posts/webgis-service-to-browser-rendering)
-5. 移动端与车机地图：从离线地图包到原生 GPU 渲染
+5. [移动端与车机地图：从离线地图包到原生 GPU 渲染](/posts/mobile-in-car-offline-to-native-gpu)
 6. 实时与边缘 GIS：空间数据如何进入终端设备
 7. 后台空间分析：不经过地图渲染的 GIS 链路
 
@@ -36,3 +36,4 @@
 - [GIS 系统中的五种责任：数据、处理、分析、服务与渲染](/posts/gis-system-responsibilities)
 - [离线处理链路和在线请求链路究竟有什么不同](/posts/offline-vs-online-gis)
 - [WebGIS：从空间数据服务到浏览器渲染的完整链路](/posts/webgis-service-to-browser-rendering)
+- [移动端与车机地图：从离线地图包到原生 GPU 渲染](/posts/mobile-in-car-offline-to-native-gpu)
