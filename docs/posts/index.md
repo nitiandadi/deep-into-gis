@@ -8,6 +8,10 @@ description: 图层深处的全部文章
 沿着数据、算法、服务、渲染与智能化这条主线，持续整理 GIS 开发中的原理和实践。
 
 <div class="post-list">
+  <a class="post-card" href="./autonomous-driving-gis-map-evolution">
+    <strong>自动驾驶中的 GIS：从高精地图、轻地图到在线语义地图</strong>
+    <span>GIS 全链路 · 自动驾驶 · 约 20 分钟</span>
+  </a>
   <a class="post-card" href="./mobile-in-car-offline-to-native-gpu">
     <strong>移动端与车机地图：从离线地图包到原生 GPU 渲染</strong>
     <span>GIS 全链路 · 移动端与车机 · 约 19 分钟</span>

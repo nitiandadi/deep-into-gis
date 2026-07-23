@@ -28,6 +28,7 @@ export default defineConfig({
             { text: '离线处理与在线请求', link: '/posts/offline-vs-online-gis' },
             { text: 'WebGIS 完整链路', link: '/posts/webgis-service-to-browser-rendering' },
             { text: '移动端与车机地图', link: '/posts/mobile-in-car-offline-to-native-gpu' },
+            { text: '自动驾驶中的 GIS', link: '/posts/autonomous-driving-gis-map-evolution' },
             { text: '理解空间索引', link: '/posts/spatial-index' },
             { text: 'AI × GIS 从哪里开始', link: '/posts/ai-gis-start' }
           ]

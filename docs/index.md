@@ -31,6 +31,10 @@ features:
 ## 最近更新
 
 <div class="post-list">
+  <a class="post-card" href="./posts/autonomous-driving-gis-map-evolution">
+    <strong>自动驾驶中的 GIS：从高精地图、轻地图到在线语义地图</strong>
+    <span>地图不经过屏幕，怎样直接进入车辆的定位、感知和规划算法。</span>
+  </a>
   <a class="post-card" href="./posts/mobile-in-car-offline-to-native-gpu">
     <strong>移动端与车机地图：从离线地图包到原生 GPU 渲染</strong>
     <span>看地图怎样进入终端，并在弱网、定位更新与资源约束下持续生成画面。</span>
@@ -42,9 +46,5 @@ features:
   <a class="post-card" href="./posts/offline-vs-online-gis">
     <strong>离线处理与在线请求究竟有什么不同</strong>
     <span>从运行时机、性能目标和失败处理理解两条 GIS 链路。</span>
-  </a>
-  <a class="post-card" href="./posts/gis-system-responsibilities">
-    <strong>GIS 系统中的五种责任</strong>
-    <span>分清数据、处理、分析、服务与渲染的职责和边界。</span>
   </a>
 </div>
