@@ -40,6 +40,7 @@ export default defineConfig({
           text: '专题导航',
           items: [
             { text: '全部专题', link: '/topics/' },
+            { text: 'GIS 核心概念', link: '/topics/gis-core-concepts' },
             { text: 'GIS 全链路', link: '/topics/gis-full-stack' },
             { text: 'AI × GIS', link: '/topics/ai-gis' },
             { text: 'GIS 行业图谱', link: '/topics/gis-industry' }
