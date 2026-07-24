@@ -23,6 +23,7 @@ export default defineConfig({
           text: '开始阅读',
           items: [
             { text: '全部文章', link: '/posts/' },
+            { text: '空间、位置与坐标', link: '/posts/space-position-and-coordinates' },
             { text: '空间数据如何流过系统', link: '/posts/spatial-data-to-map' },
             { text: 'GIS 系统中的五种责任', link: '/posts/gis-system-responsibilities' },
             { text: '离线处理与在线请求', link: '/posts/offline-vs-online-gis' },

@@ -8,7 +8,7 @@ title: GIS 核心概念
 
 ## 系列目录
 
-### 第一章：空间、位置与坐标
+### 第一章：[空间、位置与坐标](/posts/space-position-and-coordinates)
 
 ### 第二章：地球模型与大地基准
 

@@ -8,6 +8,10 @@ description: 图层深处的全部文章
 沿着数据、算法、服务、渲染与智能化这条主线，持续整理 GIS 开发中的原理和实践。
 
 <div class="post-list">
+  <a class="post-card" href="./space-position-and-coordinates">
+    <strong>空间、位置与坐标：GIS 中的坐标到底在描述什么</strong>
+    <span>GIS 核心概念 · 空间与坐标 · 约 12 分钟</span>
+  </a>
   <a class="post-card" href="./mining-autonomous-driving-map-platform">
     <strong>矿区无人驾驶地图平台：从测绘采集、编辑质检到车辆发布</strong>
     <span>GIS 全链路 · 矿区无人驾驶 · 约 22 分钟</span>
