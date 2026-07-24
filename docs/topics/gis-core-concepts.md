@@ -10,7 +10,7 @@ title: GIS 核心概念
 
 ### 第一章：[空间、位置与坐标](/posts/space-position-and-coordinates)
 
-### 第二章：地球模型与大地基准
+### 第二章：[地球模型与大地基准](/posts/earth-models-and-geodetic-datums)
 
 ### 第三章：地图投影与坐标转换
 
