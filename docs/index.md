@@ -31,6 +31,10 @@ features:
 ## 最近更新
 
 <div class="post-list">
+  <a class="post-card" href="./posts/mining-autonomous-driving-map-platform">
+    <strong>矿区无人驾驶地图平台：从测绘采集、编辑质检到车辆发布</strong>
+    <span>沿着一份地图从采集、编辑、质检和版本冻结，走到无人矿卡安全切换。</span>
+  </a>
   <a class="post-card" href="./posts/autonomous-driving-gis-map-evolution">
     <strong>自动驾驶中的 GIS：从高精地图、轻地图到在线语义地图</strong>
     <span>地图不经过屏幕，怎样直接进入车辆的定位、感知和规划算法。</span>
