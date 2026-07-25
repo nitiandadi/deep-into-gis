@@ -8,6 +8,10 @@ description: 图层深处的全部文章
 沿着数据、算法、服务、渲染与智能化这条主线，持续整理 GIS 开发中的原理和实践。
 
 <div class="post-list">
+  <a class="post-card" href="./map-projections-and-coordinate-transformations">
+    <strong>地图投影与坐标转换：曲面如何变成平面，坐标为什么会改变</strong>
+    <span>GIS 核心概念 · 地图投影与坐标转换 · 约 18 分钟</span>
+  </a>
   <a class="post-card" href="./earth-models-and-geodetic-datums">
     <strong>地球模型与大地基准：经纬度和高程依附在哪个地球上</strong>
     <span>GIS 核心概念 · 地球模型与大地基准 · 约 16 分钟</span>
