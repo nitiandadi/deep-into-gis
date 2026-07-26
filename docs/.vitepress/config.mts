@@ -23,6 +23,7 @@ export default defineConfig({
           text: '开始阅读',
           items: [
             { text: '全部文章', link: '/posts/' },
+            { text: '拓扑与车道网络', link: '/posts/topology-and-spatial-relations' },
             { text: '地图投影与坐标转换', link: '/posts/map-projections-and-coordinate-transformations' },
             { text: '地球模型与大地基准', link: '/posts/earth-models-and-geodetic-datums' },
             { text: '空间、位置与坐标', link: '/posts/space-position-and-coordinates' },

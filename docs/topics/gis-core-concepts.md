@@ -14,7 +14,7 @@ title: GIS 核心概念
 
 ### 第三章：[地图投影与坐标转换](/posts/map-projections-and-coordinate-transformations)
 
-### 第四章：拓扑与空间关系
+### 第四章：[拓扑与空间关系](/posts/topology-and-spatial-relations)
 
 ### 第五章：空间计算与几何运算
 
