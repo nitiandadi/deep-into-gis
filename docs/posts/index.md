@@ -9,8 +9,8 @@ description: 图层深处的全部文章
 
 <div class="post-list">
   <a class="post-card" href="./topology-and-spatial-relations">
-    <strong>拓扑与空间关系：从 DE-9IM 到自动驾驶车道网络</strong>
-    <span>GIS 核心概念 · 拓扑与空间关系 · 约 30 分钟</span>
+    <strong>拓扑与空间关系：GIS 如何描述相交、邻接、包含与连通</strong>
+    <span>GIS 核心概念 · 拓扑与空间关系 · 约 32 分钟</span>
   </a>
   <a class="post-card" href="./map-projections-and-coordinate-transformations">
     <strong>地图投影与坐标转换：曲面如何变成平面，坐标为什么会改变</strong>
