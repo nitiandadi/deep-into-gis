@@ -5,7 +5,7 @@ description: 从七桥问题、节点边面模型到 DE-9IM，理解 GIS 拓扑�
 
 # 拓扑与空间关系：GIS 如何描述相交、邻接、包含与连通
 
-<p class="post-meta">2026-07-27 · GIS 核心概念 · 拓扑与空间关系 · 约 32 分钟</p>
+<p class="post-meta">2026-07-28 · GIS 核心概念 · 拓扑与空间关系 · 约 36 分钟</p>
 
 前面几章讨论的是空间对象“在哪里”：坐标怎样表达位置，地球模型怎样为坐标提供基准，地图投影又怎样把曲面位置转换到平面。
 
@@ -383,6 +383,132 @@ F***0****  → 边界交集为零维，只共享角点
 - 使用人为归属规则：可以保证结果唯一，但它属于业务语义。
 
 拓扑提供精确定义，业务仍要选择符合自身规则的谓词。
+
+## DE-9IM 真正统一了什么
+
+如果没有统一模型，空间关系很容易被实现成一组彼此独立的几何算法：
+
+```text
+Touches  写一套端点和边界判断
+Contains 写一套点在面内和线面判断
+Overlaps 再写一套重叠判断
+Crosses  又写一套穿越判断
+```
+
+问题不只是代码重复。点—线、点—面、线—线、线—面、面—面拥有不同的维度组合，每个谓词还要处理端点、孔洞、多部件几何和边界规则。若每个关系各自定义：
+
+- 很难证明谓词是否完整；
+- 不同谓词可能给出互相矛盾的结果；
+- 不同软件可能对同一个名称采用不同语义；
+- 增加一个自定义关系就要重新进入底层几何算法；
+- 修复精度和鲁棒性问题时，需要修改多套实现。
+
+DE-9IM 把问题拆成了两层。
+
+### 第一层：统一计算拓扑事实
+
+底层几何引擎集中回答一个统一问题：
+
+> A、B 的内部、边界和外部如何相交？
+
+更具体地说，就是确定九个交集是否为空，以及非空交集的最高维度：
+
+```text
+dim(I(A) ∩ I(B))   dim(I(A) ∩ B(B))   dim(I(A) ∩ E(B))
+dim(B(A) ∩ I(B))   dim(B(A) ∩ B(B))   dim(B(A) ∩ E(B))
+dim(E(A) ∩ I(B))   dim(E(A) ∩ B(B))   dim(E(A) ∩ E(B))
+```
+
+为了得到这些事实，底层仍然要处理复杂的计算几何问题：
+
+- 线段是否相交以及交点在哪里；
+- 点落在线内部、端点还是线外；
+- 点位于面的内部、边界、孔洞还是外部；
+- 两组边界交于点、线还是面；
+- 交叉位置怎样进行节点化；
+- 多部件几何和闭合线采用什么边界规则；
+- 浮点精度下怎样保持计算鲁棒性。
+
+DE-9IM 没有消灭复杂几何算法，而是把它们收敛到一个统一的“拓扑事实生产层”。
+
+### 第二层：用规则解释拓扑事实
+
+矩阵得到以后，上层不再重新研究坐标，而是匹配规则：
+
+```text
+统一计算拓扑事实
+        ↓
+DE-9IM Intersection Matrix
+        ↓
+不同规则解释这些事实
+        ↓
+Touches / Crosses / Overlaps
+Contains / Within
+Equals / Covers / CoveredBy
+```
+
+其中一些关系可以用一个模式表示：
+
+| 关系 | 典型 DE-9IM 模式 |
+|---|---|
+| `Disjoint` | `FF*FF****` |
+| `Within` | `T*F**F***` |
+| `Contains` | `T*****FF*` |
+| `EqualsTopo` | `T*F**FFF*` |
+
+`Touches`、`Crosses`、`Overlaps` 会根据输入几何维度使用不同模式；`Covers` 和 `CoveredBy` 也可以匹配多种允许边界参与的模式。上层谓词的本质仍然一致：
+
+```text
+predicate(A, B)
+=
+match(relate(A, B), predicateRules, dimensionA, dimensionB)
+```
+
+例如，底层只要确定“点的内部与 Polygon 边界交于零维点，点的内部与 Polygon 内部不相交”，上层就能同时推出：
+
+```text
+Touches   = true
+Within    = false
+CoveredBy = true
+```
+
+不需要分别实现三套点—面算法。
+
+### 自定义关系也变成了规则
+
+假设地籍业务中的“相邻地块”必须共享一段边线，仅碰到角点不算相邻。底层仍然计算同一份九交事实，上层只增加一个模式：
+
+```text
+F***1****
+```
+
+它表达：
+
+- 两个面的内部不相交；
+- 两个面的边界交集是一维；
+- 其他格子不影响当前规则。
+
+这使 DE-9IM 不只是标准谓词的实现基础，也成为自定义空间关系的规则语言。
+
+::: tip DE-9IM 的核心架构价值
+它把“怎样可靠计算几何交集”和“业务把什么称为接触、穿越、包含或邻接”分开。底层负责事实，上层负责语义。
+:::
+
+### 统一语义不代表每次都完整计算矩阵
+
+从概念上看，所有谓词都可以通过完整 DE-9IM 矩阵解释；从工程实现看，高性能几何库不一定每次都把九个格子全部算完。
+
+例如判断 `Intersects` 时，只要发现任意一个有效公共点，结果就已经确定；判断某些包含关系时，包围盒和维度也可以提前排除不可能情况。继续计算剩余交集只会浪费时间。
+
+因此 JTS、GEOS 等库可以采用：
+
+- 包围盒预判；
+- 按谓词需要计算部分拓扑事实；
+- 结果一旦确定就短路返回；
+- 对重复查询的固定几何建立 Prepared 空间索引；
+- 只有调用 `relate()` 时才生成完整矩阵。
+
+优化改变的是“需要计算多少事实”，不改变谓词最终遵循的 DE-9IM 语义。
 
 ## DE-9IM 不等于完整的 GIS 拓扑
 
@@ -844,20 +970,23 @@ connected(A, B, participant, time, state, level)
 
 ## JTS、GEOS、PostGIS 和拓扑模型分别处在哪一层
 
-### JTS 与 GEOS
+### JTS：事实矩阵、规则匹配和短路谓词
 
-JTS 和 GEOS 主要提供平面几何模型、DE-9IM 谓词、几何有效性检查和叠加运算。
+JTS 主要提供平面几何模型、DE-9IM 谓词、几何有效性检查和叠加运算。
 
-JTS 中可以直接获得完整九交矩阵：
+`IntersectionMatrix` 是对 DE-9IM 的直接建模。JTS 可以先计算完整事实矩阵，再用标准或自定义规则解释：
 
 ```java
 IntersectionMatrix matrix = a.relate(b);
 
 System.out.println(matrix.toString());
+
+boolean within             = matrix.isWithin();
+boolean contains           = matrix.isContains();
 boolean sharesBoundaryLine = matrix.matches("F***1****");
 ```
 
-具名谓词则适合常见判断：
+标准具名谓词向业务代码隐藏了矩阵细节：
 
 ```java
 a.intersects(b);
@@ -870,19 +999,116 @@ a.overlaps(b);
 a.equalsTopo(b);
 ```
 
+它们在语义上由 DE-9IM 定义，但实现不必先生成完整九字符字符串。
+
+JTS 1.20 的 `RelateNG` 更直接体现了“事实与谓词分离”的设计。它既可以返回完整 `IntersectionMatrix`，也可以接受具名谓词或自定义矩阵模式，并在结果已经确定时提前结束：
+
+```java
+IntersectionMatrix facts = RelateNG.relate(a, b);
+
+boolean adjacent = RelateNG.relate(a, b, "F***1****");
+boolean touches  = RelateNG.relate(
+    a,
+    b,
+    RelatePredicate.touches()
+);
+```
+
+如果要用同一个行政区反复判断大量点或要素，可以准备固定几何，缓存内部空间索引：
+
+```java
+RelateNG preparedArea = RelateNG.prepare(area);
+
+for (Geometry candidate : candidates) {
+    boolean covered = preparedArea.evaluate(
+        candidate,
+        RelatePredicate.covers()
+    );
+}
+```
+
+Prepared 模式没有改变 `Covers` 的定义，只是减少重复构建索引和重复扫描几何的成本。
+
+### GEOS：把同一模型带到 C/C++ 与更多系统
+
+GEOS 是 JTS 思想在 C/C++ 生态中的实现，也是 PostGIS、Shapely 等大量空间软件的重要几何基础。
+
+GEOS C API 同样分成“返回事实矩阵”和“直接匹配规则”：
+
+```c
+char* matrix = GEOSRelate(a, b);
+
+char adjacent = GEOSRelatePatternMatch(
+    matrix,
+    "F***1****"
+);
+
+GEOSFree(matrix);
+```
+
+不需要保留完整矩阵时，可以直接计算并匹配：
+
+```c
+char adjacent = GEOSRelatePattern(
+    a,
+    b,
+    "F***1****"
+);
+```
+
+GEOS 还提供 `GEOSTouches`、`GEOSCrosses`、`GEOSContains`、`GEOSWithin` 等具名谓词。它们向调用者暴露不同业务名称，底层仍共享统一的拓扑关系语义和几何计算能力。
+
+对于一个固定几何与大量候选对象的重复关系判断，GEOS 也支持 Prepared Geometry 和 Prepared Relate Pattern，避免每次从头处理固定对象。
+
 ### PostGIS Geometry
 
-普通 PostGIS `geometry` 主要使用简单要素模型：
+普通 PostGIS `geometry` 主要使用简单要素模型。它把 GEOS 的几何能力暴露成 SQL，使“先取得事实、再解释规则”可以直接写进数据库：
 
 ```sql
 SELECT ST_Intersects(a.geom, b.geom);
 SELECT ST_Contains(a.geom, b.geom);
 SELECT ST_Covers(a.geom, b.geom);
+
+-- 返回完整 DE-9IM 事实矩阵
 SELECT ST_Relate(a.geom, b.geom);
+
+-- 直接判断自定义关系
 SELECT ST_Relate(a.geom, b.geom, 'F***1****');
 ```
 
+也可以先保存或取得矩阵，再单独匹配规则：
+
+```sql
+SELECT ST_RelateMatch(
+    ST_Relate(a.geom, b.geom),
+    'F***1****'
+);
+```
+
 这些函数根据几何按需计算关系，并不要求数据预先存成共享 Node、Edge、Face。
+
+在查询大量数据时，优先使用已有的 `ST_Intersects`、`ST_Contains` 等具名谓词，通常更容易利用空间索引和内部短路优化。只有标准谓词无法表达业务关系时，再使用 `ST_Relate` 模式，并配合包围盒条件缩小候选集：
+
+```sql
+SELECT a.id, b.id
+FROM parcel a
+JOIN parcel b
+  ON a.geom && b.geom
+ AND ST_Relate(a.geom, b.geom, 'F***1****');
+```
+
+这里职责分工很清楚：
+
+```text
+GiST 空间索引 / 包围盒
+→ 排除不可能匹配的对象
+
+GEOS 拓扑计算
+→ 产生所需的内部、边界、外部相交事实
+
+ST_Relate 模式
+→ 把事实解释为“共享边线相邻”
+```
 
 ### PostGIS Topology
 
@@ -1046,6 +1272,10 @@ DE-9IM
 - [Esri：ArcInfo Coverage 中的显式拓扑关联](https://downloads.esri.com/support/whitepapers/ao_/ArcMapEditCov.pdf)
 - [JTS Geometry API](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html)
 - [JTS IntersectionMatrix API](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/IntersectionMatrix.html)
+- [JTS RelateNG API](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/operation/relateng/RelateNG.html)
+- [JTS RelatePredicate API](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/operation/relateng/RelatePredicate.html)
+- [GEOS C API：Relate 与 RelatePattern](https://libgeos.org/doxygen/geos__c_8h.html)
+- [PostGIS：ST_Relate](https://postgis.net/docs/ST_Relate.html)
 - [PostGIS：Topology](https://postgis.net/docs/manual-dev/en/Topology.html)
 - [GDAL：OGRGeometry C++ API](https://gdal.org/en/stable/api/ogrgeometry_cpp.html)
 - [Lanelet2：Routing](https://docs.ros.org/en/rolling/p/lanelet2_routing/index.html)
