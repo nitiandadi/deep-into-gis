@@ -31,6 +31,10 @@ features:
 ## 最近更新
 
 <div class="post-list">
+  <a class="post-card" href="./posts/autonomous-driving-map-data-lifecycle">
+    <strong>从车端采集到控制执行：自动驾驶地图的数据生命周期</strong>
+    <span>看候选地图 Patch 怎样经过云端生产与发布，再回到车端参与定位、规划和控制。</span>
+  </a>
   <a class="post-card" href="./posts/mining-autonomous-driving-map-platform">
     <strong>矿区无人驾驶地图平台：从测绘采集、编辑质检到车辆发布</strong>
     <span>沿着一份地图从采集、编辑、质检和版本冻结，走到无人矿卡安全切换。</span>

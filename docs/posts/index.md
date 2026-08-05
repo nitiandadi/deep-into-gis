@@ -8,6 +8,10 @@ description: 图层深处的全部文章
 沿着数据、算法、服务、渲染与智能化这条主线，持续整理 GIS 开发中的原理和实践。
 
 <div class="post-list">
+  <a class="post-card" href="./autonomous-driving-map-data-lifecycle">
+    <strong>从车端采集到控制执行：自动驾驶地图的数据生命周期</strong>
+    <span>GIS 全链路 · 自动驾驶地图 · 约 20 分钟</span>
+  </a>
   <a class="post-card" href="./topology-and-spatial-relations">
     <strong>拓扑与空间关系：GIS 如何描述相交、邻接、包含与连通</strong>
     <span>GIS 核心概念 · 拓扑与空间关系 · 约 36 分钟</span>

@@ -21,13 +21,14 @@
 
 6. [自动驾驶中的 GIS：从高精地图、轻地图到在线语义地图](/posts/autonomous-driving-gis-map-evolution)
 7. [矿区无人驾驶地图平台：从测绘采集、编辑质检到车辆发布](/posts/mining-autonomous-driving-map-platform)
-8. 水务管网 GIS 全链路总览
-9. 低空空间计算全链路总览
+8. [从车端采集到控制执行：自动驾驶地图的数据生命周期](/posts/autonomous-driving-map-data-lifecycle)
+9. 水务管网 GIS 全链路总览
+10. 低空空间计算全链路总览
 
 #### D. 共性与差异汇总
 
-10. WebGIS、自动驾驶、水务与低空共享怎样的 GIS 全链路
-11. 不同 GIS 系统为什么有的必须渲染，有的直接参与计算和控制
+11. WebGIS、自动驾驶、水务与低空共享怎样的 GIS 全链路
+12. 不同 GIS 系统为什么有的必须渲染，有的直接参与计算和控制
 
 ## 已发布
 
@@ -38,3 +39,4 @@
 - [移动端与车机地图：从离线地图包到原生 GPU 渲染](/posts/mobile-in-car-offline-to-native-gpu)
 - [自动驾驶中的 GIS：从高精地图、轻地图到在线语义地图](/posts/autonomous-driving-gis-map-evolution)
 - [矿区无人驾驶地图平台：从测绘采集、编辑质检到车辆发布](/posts/mining-autonomous-driving-map-platform)
+- [从车端采集到控制执行：自动驾驶地图的数据生命周期](/posts/autonomous-driving-map-data-lifecycle)
