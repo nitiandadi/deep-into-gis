@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">全量扫描与空间索引查询对比</title>
+  <desc id="desc">左侧逐个检查所有对象，右侧通过空间分区只检查查询窗口附近的候选对象。</desc>
+  <rect width="1200" height="640" rx="28" fill="#0f172a"/>
+  <text x="300" y="64" fill="#f8fafc" font-size="30" text-anchor="middle" font-family="sans-serif" font-weight="700">全量扫描</text>
+  <text x="900" y="64" fill="#f8fafc" font-size="30" text-anchor="middle" font-family="sans-serif" font-weight="700">空间索引</text>
+  <line x1="600" y1="30" x2="600" y2="610" stroke="#334155" stroke-width="2"/>
+  <g fill="#334155">
+    <circle cx="105" cy="140" r="10"/><circle cx="180" cy="112" r="10"/><circle cx="260" cy="155" r="10"/><circle cx="355" cy="118" r="10"/><circle cx="470" cy="160" r="10"/>
+    <circle cx="135" cy="225" r="10"/><circle cx="215" cy="258" r="10"/><circle cx="310" cy="215" r="10"/><circle cx="420" cy="245" r="10"/><circle cx="510" cy="220" r="10"/>
+    <circle cx="88" cy="340" r="10"/><circle cx="175" cy="320" r="10"/><circle cx="270" cy="365" r="10"/><circle cx="370" cy="330" r="10"/><circle cx="500" cy="355" r="10"/>
+    <circle cx="120" cy="450" r="10"/><circle cx="215" cy="485" r="10"/><circle cx="325" cy="445" r="10"/><circle cx="430" cy="475" r="10"/><circle cx="520" cy="430" r="10"/>
+  </g>
+  <rect x="330" y="285" width="150" height="130" rx="8" fill="#0f766e" fill-opacity=".22" stroke="#2dd4bf" stroke-width="4"/>
+  <g fill="none" stroke="#fb7185" stroke-width="3">
+    <circle cx="105" cy="140" r="20"/><circle cx="180" cy="112" r="20"/><circle cx="260" cy="155" r="20"/><circle cx="355" cy="118" r="20"/><circle cx="470" cy="160" r="20"/>
+    <circle cx="135" cy="225" r="20"/><circle cx="215" cy="258" r="20"/><circle cx="310" cy="215" r="20"/><circle cx="420" cy="245" r="20"/><circle cx="510" cy="220" r="20"/>
+    <circle cx="88" cy="340" r="20"/><circle cx="175" cy="320" r="20"/><circle cx="270" cy="365" r="20"/><circle cx="370" cy="330" r="20"/><circle cx="500" cy="355" r="20"/>
+    <circle cx="120" cy="450" r="20"/><circle cx="215" cy="485" r="20"/><circle cx="325" cy="445" r="20"/><circle cx="430" cy="475" r="20"/><circle cx="520" cy="430" r="20"/>
+  </g>
+  <g stroke="#334155" stroke-width="2">
+    <path d="M650 100H1150M650 200H1150M650 300H1150M650 400H1150M650 500H1150"/>
+    <path d="M650 100V500M750 100V500M850 100V500M950 100V500M1050 100V500M1150 100V500"/>
+  </g>
+  <g fill="#475569">
+    <circle cx="685" cy="142" r="9"/><circle cx="775" cy="120" r="9"/><circle cx="875" cy="168" r="9"/><circle cx="1000" cy="145" r="9"/><circle cx="1110" cy="175" r="9"/>
+    <circle cx="700" cy="245" r="9"/><circle cx="805" cy="270" r="9"/><circle cx="895" cy="230" r="9"/><circle cx="990" cy="260" r="9"/><circle cx="1090" cy="220" r="9"/>
+    <circle cx="680" cy="355" r="9"/><circle cx="790" cy="325" r="9"/><circle cx="890" cy="365" r="9"/><circle cx="980" cy="330" r="9"/><circle cx="1105" cy="370" r="9"/>
+    <circle cx="710" cy="455" r="9"/><circle cx="820" cy="475" r="9"/><circle cx="930" cy="445" r="9"/><circle cx="1030" cy="470" r="9"/><circle cx="1120" cy="430" r="9"/>
+  </g>
+  <rect x="850" y="300" width="200" height="100" rx="8" fill="#0f766e" fill-opacity=".3" stroke="#2dd4bf" stroke-width="4"/>
+  <rect x="850" y="300" width="100" height="100" fill="#14b8a6" fill-opacity=".16"/><rect x="950" y="300" width="100" height="100" fill="#14b8a6" fill-opacity=".16"/>
+  <circle cx="890" cy="365" r="20" fill="none" stroke="#fbbf24" stroke-width="4"/><circle cx="980" cy="330" r="20" fill="none" stroke="#fbbf24" stroke-width="4"/>
+  <text x="300" y="565" fill="#fda4af" font-size="23" text-anchor="middle" font-family="sans-serif">所有对象都参与精确判断</text>
+  <text x="900" y="565" fill="#5eead4" font-size="23" text-anchor="middle" font-family="sans-serif">只检查相交单元中的候选</text>
+</svg>

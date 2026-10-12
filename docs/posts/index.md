@@ -57,8 +57,8 @@ description: 图层深处的全部文章
     <span>GIS 全链路 · 全链路总览 · 约 18 分钟</span>
   </a>
   <a class="post-card" href="./spatial-index">
-    <strong>理解空间索引：为什么地图查询可以很快</strong>
-    <span>GIS 全链路 · 空间算法 · 约 8 分钟</span>
+    <strong>空间索引：地图为什么能从百万要素中快速找到附近对象</strong>
+    <span>GIS 核心概念 · 空间索引与查询原理 · 约 18 分钟</span>
   </a>
   <a class="post-card" href="./ai-gis-start">
     <strong>AI × GIS 应该从哪里开始？</strong>

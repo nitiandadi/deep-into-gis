@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">R-Tree 层级包围盒</title>
+  <desc id="desc">左侧空间中的对象被多个层级包围盒组织，右侧树结构只展开与查询范围相交的分支。</desc>
+  <rect width="1200" height="660" rx="28" fill="#0f172a"/>
+  <text x="600" y="58" fill="#f8fafc" font-size="30" text-anchor="middle" font-family="sans-serif" font-weight="700">R-Tree：空间包围盒与树节点一一对应</text>
+  <g transform="translate(60 100)">
+    <rect x="20" y="30" width="230" height="190" fill="#14b8a6" fill-opacity=".06" stroke="#2dd4bf" stroke-width="4"/><rect x="250" y="60" width="250" height="210" fill="#818cf8" fill-opacity=".06" stroke="#818cf8" stroke-width="4"/><rect x="80" y="280" width="220" height="190" fill="#f59e0b" fill-opacity=".06" stroke="#f59e0b" stroke-width="4"/><rect x="310" y="300" width="220" height="180" fill="#e879f9" fill-opacity=".06" stroke="#e879f9" stroke-width="4"/>
+    <g fill="#64748b"><rect x="45" y="65" width="65" height="40" rx="6"/><rect x="135" y="120" width="80" height="55" rx="6"/><rect x="285" y="95" width="70" height="50" rx="6"/><rect x="390" y="170" width="75" height="55" rx="6"/><rect x="110" y="325" width="65" height="55" rx="6"/><rect x="200" y="390" width="65" height="45" rx="6"/><rect x="345" y="345" width="70" height="50" rx="6"/><rect x="430" y="410" width="65" height="40" rx="6"/></g>
+    <rect x="205" y="175" width="135" height="135" rx="8" fill="#fb7185" fill-opacity=".2" stroke="#fb7185" stroke-width="4" stroke-dasharray="10 7"/><text x="272" y="245" fill="#fecdd3" font-size="19" text-anchor="middle" font-family="sans-serif">查询范围</text>
+  </g>
+  <g transform="translate(675 105)" font-family="sans-serif">
+    <path d="M225 75V130M225 130L95 195M225 130L355 195M95 235V290M95 290L35 350M95 290L155 350M355 235V290M355 290L295 350M355 290L415 350" fill="none" stroke="#64748b" stroke-width="4"/>
+    <rect x="145" y="25" width="160" height="55" rx="12" fill="#334155" stroke="#94a3b8" stroke-width="3"/><text x="225" y="60" fill="#f8fafc" font-size="20" text-anchor="middle">Root MBR</text>
+    <rect x="25" y="180" width="140" height="55" rx="12" fill="#134e4a" stroke="#2dd4bf" stroke-width="3"/><text x="95" y="215" fill="#ccfbf1" font-size="19" text-anchor="middle">分支 A</text>
+    <rect x="285" y="180" width="140" height="55" rx="12" fill="#312e81" stroke="#818cf8" stroke-width="3"/><text x="355" y="215" fill="#e0e7ff" font-size="19" text-anchor="middle">分支 B</text>
+    <rect x="0" y="340" width="70" height="50" rx="10" fill="#0f766e"/><text x="35" y="372" fill="#ccfbf1" font-size="17" text-anchor="middle">A1</text><rect x="120" y="340" width="70" height="50" rx="10" fill="#0f766e"/><text x="155" y="372" fill="#ccfbf1" font-size="17" text-anchor="middle">A2</text><rect x="260" y="340" width="70" height="50" rx="10" fill="#3730a3"/><text x="295" y="372" fill="#e0e7ff" font-size="17" text-anchor="middle">B1</text><rect x="380" y="340" width="70" height="50" rx="10" fill="#3730a3"/><text x="415" y="372" fill="#e0e7ff" font-size="17" text-anchor="middle">B2</text>
+    <path d="M225 80V130L95 195M95 235V290L155 350" fill="none" stroke="#fbbf24" stroke-width="7" stroke-linecap="round"/><text x="225" y="465" fill="#fbbf24" font-size="20" text-anchor="middle">只沿与查询范围相交的分支向下访问</text>
+  </g>
+</svg>
