@@ -35,7 +35,7 @@ export default defineConfig({
             { text: '自动驾驶中的 GIS', link: '/posts/autonomous-driving-gis-map-evolution' },
             { text: '矿区无人驾驶地图平台', link: '/posts/mining-autonomous-driving-map-platform' },
             { text: '自动驾驶地图数据生命周期', link: '/posts/autonomous-driving-map-data-lifecycle' },
-            { text: '空间索引与查询原理', link: '/posts/spatial-index' },
+            { text: '空间索引', link: '/posts/spatial-index' },
             { text: 'AI × GIS 从哪里开始', link: '/posts/ai-gis-start' }
           ]
         }
