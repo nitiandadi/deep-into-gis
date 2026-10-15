@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="840" viewBox="0 0 880 840" role="img" aria-labelledby="title desc">
+  <title id="title">四叉树插入与分裂：当前点插入成功后才处理下一个点</title>
+  <desc id="desc">输入当前点，找到包含它的叶子；范围外拒绝，未满则插入，已满则检查分裂停止条件。允许分裂时重分配旧点后重试当前点，无法继续分裂时在叶子中追加当前点。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8ba7bc"/></marker>
+    <style>
+      text{font-family:"Microsoft YaHei","PingFang SC",sans-serif;fill:#e7edf4;font-size:17px;text-anchor:middle}
+      .box{fill:#182b3a;stroke:#7596ad;stroke-width:1.5;rx:12}
+      .decision{fill:#163c37;stroke:#5bc9ad;stroke-width:1.5}
+      .line{fill:none;stroke:#8ba7bc;stroke-width:2;marker-end:url(#arrow)}
+      .small{font-size:14px;fill:#b9cbd8}
+    </style>
+  </defs>
+  <rect width="880" height="840" rx="16" fill="#101c27"/>
+  <text x="440" y="40" font-size="23" font-weight="700">四叉树：当前点的插入过程</text>
+  <rect class="box" x="290" y="65" width="300" height="55"/>
+  <text x="440" y="99">取当前点</text>
+  <path class="line" d="M440 120V150"/>
+  <rect class="box" x="290" y="150" width="300" height="60"/>
+  <text x="440" y="186">查找范围包含它的叶子</text>
+  <path class="line" d="M440 210V240"/>
+  <polygon class="decision" points="440,240 570,295 440,350 310,295"/>
+  <text x="440" y="301">找到叶子？</text>
+  <path class="line" d="M570 295H620"/>
+  <text class="small" x="595" y="281">否</text>
+  <rect class="box" x="620" y="265" width="215" height="60"/>
+  <text x="727" y="292">范围外</text><text class="small" x="727" y="313">拒绝 / 单独处理</text>
+  <path class="line" d="M440 350V380"/>
+  <text class="small" x="461" y="369">是</text>
+  <polygon class="decision" points="440,380 570,435 440,490 310,435"/>
+  <text x="440" y="441">叶子已满？</text>
+  <path class="line" d="M570 435H620"/>
+  <text class="small" x="595" y="421">否</text>
+  <rect class="box" x="620" y="405" width="215" height="60"/>
+  <text x="727" y="441">插入当前点</text>
+  <path class="line" d="M727 465V535"/>
+  <rect class="box" x="620" y="535" width="215" height="60"/>
+  <text x="727" y="571">成功，处理下一个点</text>
+  <path class="line" d="M440 490V520"/>
+  <text class="small" x="461" y="510">是</text>
+  <polygon class="decision" points="440,520 570,575 440,630 310,575"/>
+  <text x="440" y="581">还允许分裂？</text>
+  <path class="line" d="M310 575H250"/>
+  <text class="small" x="280" y="561">否</text>
+  <rect class="box" x="35" y="545" width="215" height="60"/>
+  <text x="142" y="572">停止继续分裂</text><text class="small" x="142" y="593">在叶子中追加当前点</text>
+  <path class="line" d="M142 605V755H850V565H835"/>
+  <path class="line" d="M440 630V665"/>
+  <text class="small" x="461" y="652">是</text>
+  <rect class="box" x="290" y="665" width="300" height="70"/>
+  <text x="440" y="695">分裂叶子，重新分配已有点</text>
+  <text class="small" x="440" y="720">当前点尚未插入</text>
+  <path class="line" d="M290 700H275V180H290"/>
+  <text class="small" x="440" y="786">分裂后重试同一个点；无法继续分裂时允许叶子超过容量阈值。</text>
+  <text class="small" x="440" y="812">中线归属：x 等于中点归右侧，y 等于中点归下侧。</text>
+</svg>
