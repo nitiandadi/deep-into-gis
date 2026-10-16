@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<title>四叉树构建 · 交互式算法可视化</title>
+<style>
+:root{--ink:#182638;--mute:#69798c;--edge:#e5ebf0;--paper:#f5f8fa;--white:#fff;--teal:#0a917c;--teal-soft:#e5f7f2;--amber:#f5a623;--rose:#e15d73;--night:#0e2233}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.55 ui-sans-serif,system-ui,-apple-system,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #9ddfd5;outline-offset:3px}.app{width:min(1180px,100%);margin:auto;padding:22px 23px 26px}.topline{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:17px}.eyebrow{color:#159d8e;font-size:10px;font-weight:800;letter-spacing:.17em}.topline h1{font-size:clamp(23px,2.6vw,33px);line-height:1.27;letter-spacing:-.04em;margin:6px 0 7px;font-weight:780}.topline p{color:var(--mute);margin:0;max-width:660px;font-size:13px}.mark{font-size:11px;padding:7px 11px;border-radius:24px;color:#357468;background:#dff2ed;white-space:nowrap;font-weight:700;margin-top:5px}.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:#fff;padding:12px 14px;border:1px solid var(--edge);border-radius:14px;margin-bottom:13px;box-shadow:0 1px 4px #12233705}.toolgroup{display:flex;align-items:center;gap:9px}.toolgroup label,.mini-label{font-size:12px;color:#657386;white-space:nowrap;font-weight:650}.toolbar select{border:1px solid #d9e3e8;border-radius:8px;background:#f9fbfc;color:#253447;padding:7px 11px;max-width:100%;font-size:12px}.capacity{display:flex;padding:3px;gap:2px;border-radius:10px;background:#ecf1f4}.capacity button{border:0;border-radius:8px;padding:6px 11px;background:transparent;color:#5a6b7c;font-size:12px;font-weight:650}.capacity button[aria-pressed="true"]{background:#fff;color:#006e60;box-shadow:0 1px 5px #13263321}.tbar-right{margin-left:auto;display:flex;align-items:center;gap:14px}.metrics{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--mute)}.metrics strong{display:block;color:var(--ink);font-size:16px;line-height:1.2;font-variant-numeric:tabular-nums}.main-grid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:13px}.panel{background:var(--white);border:1px solid var(--edge);border-radius:15px;min-width:0;overflow:hidden}.panel-head{padding:13px 16px 9px;display:flex;justify-content:space-between;align-items:center;gap:9px}.panel-title{font-weight:740;font-size:13px}.panel-caption{color:#8090a0;font-size:11px;white-space:nowrap}.map-bg{margin:0 12px 12px;border-radius:11px;background:#102a3b;overflow:hidden}.map-bg svg{width:100%;height:auto;display:block}.tree-scroll{margin:0 12px 12px;background:#f9fbfd;border-radius:10px;overflow:auto;height:390px;max-height:390px;border:1px solid #eff2f5}.tree-scroll svg{display:block}.bottom{border:1px solid var(--edge);border-radius:14px;background:#fff;margin-top:13px;padding:14px 16px 15px}.timeline-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}.status{display:flex;align-items:center;gap:8px;min-width:0}.event-type{padding:3px 9px;border-radius:7px;background:#e8f4f1;color:#087d6e;font-weight:750;font-size:11px;white-space:nowrap}.event-type.split,.event-type.full{background:#fff1d9;color:#946112}.event-type.retry{background:#e9eefc;color:#4169a3}.description{color:#293a48;font-size:13px;font-weight:590}.counter{white-space:nowrap;font-weight:750;color:#778797;font-size:12px;font-variant-numeric:tabular-nums}.scrubber{width:100%;accent-color:#138b7f;height:6px;cursor:pointer;margin:7px 0 14px;display:block}.transport{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.transport button{border-radius:9px;border:1px solid #dde6eb;background:#fff;color:#304455;padding:8px 13px;font-size:12px;font-weight:690;min-height:36px;display:inline-flex;align-items:center;gap:6px}.transport button:hover{background:#f0f6f5}.transport button:disabled{opacity:.4;cursor:not-allowed}.transport .primary{background:#0c927e;border-color:#0c927e;color:white;min-width:93px;justify-content:center}.transport .primary:hover{background:#087f6d}.transport .primary:disabled{background:#9dc5bd;border-color:#9dc5bd}.speed{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:#637488}.speed select{border:1px solid #dce6ea;border-radius:7px;padding:6px 8px;background:#fff;color:#304455}.note{display:flex;align-items:center;flex-wrap:wrap;gap:14px;color:#69798b;font-size:11px;margin-top:12px;border-top:1px solid #edf1f3;padding-top:11px}.key{display:inline-flex;gap:6px;align-items:center}.dot{width:9px;height:9px;border-radius:50%;background:#71b8e6}.dot.pending{background:#f6aa5b}.dot.moved{background:#f4cf65}.swatch{width:13px;height:8px;background:#b7e9db;border:1px solid #52ae9c;border-radius:2px}.mode-note{margin-left:auto}.map-coord{font-size:10px;fill:#7896aa}.map-plot-text{font-size:10px;fill:#d5e5ed;letter-spacing:.01em}.tree-label{font-size:11px;fill:#2c4355;font-weight:710}.tree-count{font-size:10px;fill:#6b7d8c}.tree-branch{font-size:10px;fill:#75869b}.readout{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:12px;color:#738496;padding:0 17px 13px}.readout strong{color:#1b3545} @media(max-width:760px){.app{padding:15px 10px 18px}.topline{align-items:start}.topline h1{font-size:24px}.mark{display:none}.main-grid{grid-template-columns:1fr}.tree-scroll{height:250px;max-height:250px}.toolbar{gap:9px}.tbar-right{width:100%;margin:0;justify-content:flex-end}.metrics strong{display:inline;margin-right:4px}.metrics{gap:12px}.toolbar .toolgroup{flex-wrap:wrap}.timeline-top{align-items:flex-start}.status{align-items:flex-start;flex-direction:column}.description{font-size:12px}.transport button{padding:8px 11px}.speed{margin-left:0}.mode-note{margin-left:0}.readout{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Export-only, full-frame GIF presentation (normal page is unchanged). */
+body.gif-mode{background:#f5f8fa}
+.gif-mode .app{padding:12px 16px 13px}
+.gif-mode .topline{margin-bottom:11px}
+.gif-mode .topline h1{font-size:23px;margin:1px 0}
+.gif-mode .topline p{display:none}
+.gif-mode .toolbar{display:none}
+.gif-mode .main-grid{gap:11px}
+.gif-mode .tree-scroll{height:390px}
+.gif-mode .bottom{margin-top:11px;padding:12px 16px}
+.gif-mode .bottom .scrubber,.gif-mode .bottom .transport,.gif-mode .bottom .note{display:none}
+.gif-mode .timeline-top{margin:0}
+.gif-mode .readout{padding-bottom:9px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topline"><div><div class="eyebrow">SPATIAL INDEX / INTERACTIVE LAB</div><h1>看见四叉树的每一次分裂</h1><p>从空根节点开始，观察点如何定位叶子、触发四等分，并将已有数据重新分配。每一步都与你的 C++ 插入逻辑保持一致。</p></div><div class="mark">POINT QUADTREE · 2D</div></header>
+  <section class="toolbar" aria-label="演示参数">
+    <div class="toolgroup"><label for="scenario">数据分布</label><select id="scenario"><option value="progressive">渐进分裂 · 20 点</option><option value="cluster">局部密集 · 26 点</option><option value="boundary">中线与重复点 · 18 点</option></select></div>
+    <div class="toolgroup"><span class="mini-label">叶子容量 M</span><div class="capacity" id="capacity" role="group" aria-label="叶子容量"><button data-cap="2" aria-pressed="false">2</button><button data-cap="4" aria-pressed="true">4</button><button data-cap="6" aria-pressed="false">6</button></div></div>
+    <div class="tbar-right"><div class="metrics"><div><strong id="numInserted">0</strong>已插入</div><div><strong id="numSplit">0</strong>分裂次数</div><div><strong id="numLeaf">1</strong>叶子节点</div></div></div>
+  </section>
+  <div class="main-grid">
+    <section class="panel"><div class="panel-head"><span class="panel-title">① 二维空间划分</span><span class="panel-caption" id="mapHint">坐标 x → · y ↓</span></div><div class="map-bg"><svg id="spaceSvg" viewBox="0 0 520 420" role="img" aria-label="点四叉树空间划分动画"></svg></div><div class="readout"><span>根节点 BBox：<strong id="boundsText">[0, 0] – [100, 100]</strong></span><span>当前目标：<strong id="targetPath">—</strong></span></div></section>
+    <section class="panel"><div class="panel-head"><span class="panel-title">② 树结构 · 节点归属</span><span class="panel-caption">分支节点只记录子节点</span></div><div class="tree-scroll" id="treeScroll"><svg id="treeSvg" role="img" aria-label="对应的四叉树层次结构"></svg></div><div class="readout"><span>叶子节点：<strong id="leafStats">0 / 4</strong></span><span id="pathDetail">按照左上、右上、左下、右下递归定位</span></div></section>
+  </div>
+  <section class="bottom" aria-label="动画回放">
+    <div class="timeline-top"><div class="status"><span class="event-type" id="stageType">准备</span><span class="description" id="stageText" aria-live="polite">根节点已创建，准备逐个插入点。</span></div><span class="counter" id="stepCounter">01 / 01</span></div>
+    <input class="scrubber" type="range" id="timeline" min="0" max="1" value="0" step="1" aria-label="选择动画步骤" />
+    <div class="transport"><button id="restart" aria-label="回到起点">↺ 重置</button><button id="prev" aria-label="上一步">← 上一步</button><button id="play" class="primary" aria-label="自动播放">▶ 自动播放</button><button id="next" aria-label="下一步">下一步 →</button><div class="speed"><label for="speed">速度</label><select id="speed"><option value="1200">慢速</option><option value="740" selected>正常</option><option value="360">快速</option></select></div></div>
+    <div class="note"><span class="key"><i class="dot"></i>已存储点</span><span class="key"><i class="dot pending"></i>待插入点</span><span class="key"><i class="dot moved"></i>刚被重新分配</span><span class="key"><i class="swatch"></i>当前叶子区域</span><span class="mode-note">边界约定：x = midX 归右侧，y = midY 归下侧</span></div>
+  </section>
+</div>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id), NS='http://www.w3.org/2000/svg';
+const MAX_DEPTH=5;
+const progressive=[[18,22],[31,19],[22,38],[42,34],[73,19],[37,16],[82,33],[68,72],[78,63],[59,85],[91,88],[74,81],[75,75],[71,71],[19,79],[38,68],[62,22],[48,48],[0,0],[100,100]];
+function clustered(){let pts=[[0,0],[100,100]];let seed=7381;let rnd=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296};for(let i=0;i<24;i++){let cx=i<14?72:28,cy=i<14?24:76;pts.push([Math.min(98,Math.max(2,cx+(rnd()-.5)*30)),Math.min(98,Math.max(2,cy+(rnd()-.5)*30))].map(v=>Math.round(v*10)/10))}return pts}
+const boundary=[[0,0],[100,100],[50,50],[50,20],[20,50],[50,80],[80,50],[50,50],[50,50],[25,25],[75,25],[25,75],[75,75],[75,75],[20,15],[80,12],[33,68],[65,88]];
+const allData={progressive,cluster:clustered(),boundary};
+let points=[],byId=new Map(),capacity=4,frames=[],pos=0,timer=null;
+function clone(n){return {id:n.id,x0:n.x0,x1:n.x1,y0:n.y0,y1:n.y1,depth:n.depth,ids:[...n.ids],children:n.children?n.children.map(clone):null}}
+function leaves(n,out=[]){if(n.children)n.children.forEach(c=>leaves(c,out));else out.push(n);return out}
+function findNode(n,id){if(n.id===id)return n;if(n.children)for(const c of n.children){const t=findNode(c,id);if(t)return t}return null}
+function locate(n,p,trace=[]){trace.push(n.id);if(!n.children)return {node:n,path:[...trace]};const mx=(n.x0+n.x1)/2,my=(n.y0+n.y1)/2;let index=(p.y<my?0:2)+(p.x<mx?0:1);return locate(n.children[index],p,trace)}
+function splittable(n){return n.depth<MAX_DEPTH && n.x1-n.x0>1e-9 && n.y1-n.y0>1e-9}
+function generate(){points=allData[$('scenario').value].map(([x,y],i)=>({id:i+1,x,y}));byId=new Map(points.map(p=>[p.id,p]));let xmin=Math.min(...points.map(p=>p.x)),xmax=Math.max(...points.map(p=>p.x)),ymin=Math.min(...points.map(p=>p.y)),ymax=Math.max(...points.map(p=>p.y));if(xmax===xmin)xmax++;if(ymax===ymin)ymax++;let root={id:'R',x0:xmin,x1:xmax,y0:ymin,y1:ymax,depth:0,ids:[],children:null},inserted=[],splits=0;frames=[];
+  function add(kind,label,p,active,path=[],moved=[]){frames.push({tree:clone(root),inserted:[...inserted],splits,kind,label,pid:p?.id||null,active,path:[...path],moved:[...moved]})}
+  add('start','扫描全部点的坐标极值，建立空根节点 R。',null,null);
+  for(const p of points){let retries=0,limit=32;while(limit--){const r=locate(root,p);const node=r.node;add(retries?'retry':'locate',`点 P${p.id}：按中线逐级定位到叶子 ${node.id}（已有 ${node.ids.length}/${capacity} 个点）。`,p,node.id,r.path);if(node.ids.length<capacity || !splittable(node)){node.ids.push(p.id);inserted.push(p.id);add('insert',splittable(node)?`P${p.id} 插入 ${node.id} 成功，继续下一个点。`:`P${p.id} 存入 ${node.id}；已到最大深度，允许超过容量。`,p,node.id,r.path);break}
+    add('full',`叶子 ${node.id} 已满（${capacity}/${capacity}）。先分裂并重分配旧点，当前 P${p.id} 暂不插入。`,p,node.id,r.path);
+    const mx=(node.x0+node.x1)/2,my=(node.y0+node.y1)/2;
+    const cells=[[node.x0,node.y0,mx,my,'NW'],[mx,node.y0,node.x1,my,'NE'],[node.x0,my,mx,node.y1,'SW'],[mx,my,node.x1,node.y1,'SE']];
+    node.children=cells.map(([x0,y0,x1,y1,s])=>({id:node.id==='R'?s:`${node.id}/${s}`,x0,y0,x1,y1,depth:node.depth+1,ids:[],children:null}));
+    const moved=[...node.ids];for(const id of moved){const q=byId.get(id),side=q.x<mx?0:1,row=q.y<my?0:2;node.children[row+side].ids.push(id)}node.ids=[];splits++;
+    add('split',`${node.id} 完成四等分：原有 ${moved.length} 个点按象限转移到四个子叶子；P${p.id} 随后重试。`,p,node.id,r.path,moved);retries++;
+  }}
+  add('done',`构建完成：${points.length} 个点全部存储在叶子节点中，共发生 ${splits} 次分裂。`,null,null);
+  $('timeline').max=frames.length-1;pos=0;stop();render();
+}
+function svgEl(name,attrs={},text){const e=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(text!=null)e.textContent=text;return e}
+function append(parent,name,attrs,text){const e=svgEl(name,attrs,text);parent.appendChild(e);return e}
+function renderSpace(frame){const svg=$('spaceSvg');svg.innerHTML='';const root=frame.tree,ox=63,oy=25,size=362,sx=x=>ox+(x-root.x0)/(root.x1-root.x0)*size,sy=y=>oy+(y-root.y0)/(root.y1-root.y0)*size;
+  const defs=append(svg,'defs'),glow=append(defs,'filter',{id:'halo',x:'-50%',y:'-50%',width:'200%',height:'200%'});append(glow,'feGaussianBlur',{stdDeviation:3});append(svg,'rect',{x:0,y:0,width:520,height:420,fill:'#102a3b'});
+  for(let i=0;i<=10;i++){let c=ox+size*i/10;append(svg,'line',{x1:c,y1:oy,x2:c,y2:oy+size,stroke:'#8ba9bb','stroke-opacity':'.085','stroke-width':1});let d=oy+size*i/10;append(svg,'line',{x1:ox,y1:d,x2:ox+size,y2:d,stroke:'#8ba9bb','stroke-opacity':'.085','stroke-width':1})}
+  function polygons(n){const x=sx(n.x0),y=sy(n.y0),w=sx(n.x1)-x,h=sy(n.y1)-y;if(n.children){for(const child of n.children)polygons(child)}else{append(svg,'rect',{x,y,width:w,height:h,fill: ['#37b6af','#4d8ac2','#7066b9','#64bc93','#9b86cd','#50a3b3'][n.depth%6],'fill-opacity':.085+Math.min(.11,n.depth*.025)});append(svg,'rect',{x,y,width:w,height:h,fill:'none',stroke:'#66acc4','stroke-opacity':'.73','stroke-width':n.depth>2?1.2:1.8})}}
+  polygons(root);
+  if(frame.active){const node=findNode(root,frame.active);if(node){let x=sx(node.x0),y=sy(node.y0),w=sx(node.x1)-x,h=sy(node.y1)-y;append(svg,'rect',{x:x+1,y:y+1,width:Math.max(0,w-2),height:Math.max(0,h-2),fill:frame.kind==='split'?'#ffc963':'#86ecd0','fill-opacity':frame.kind==='split'?'.19':'.14',stroke:frame.kind==='full'||frame.kind==='split'?'#fbbf60':'#79e4c7','stroke-width':2.7,'stroke-dasharray':frame.kind==='full'?'6 4':'none'})}}
+  append(svg,'rect',{x:ox,y:oy,width:size,height:size,fill:'none',stroke:'#b7d3df','stroke-width':2});
+  for(let i=0;i<=4;i++){let tx=root.x0+(root.x1-root.x0)*i/4,ty=root.y0+(root.y1-root.y0)*i/4;append(svg,'text',{x:sx(tx),y:oy+size+19,'text-anchor':'middle',class:'map-coord'},Number(tx.toFixed(1)));append(svg,'text',{x:ox-10,y:sy(ty)+3,'text-anchor':'end',class:'map-coord'},Number(ty.toFixed(1)))}
+  append(svg,'text',{x:ox+size/2,y:412,'text-anchor':'middle',class:'map-plot-text'},'x →');append(svg,'text',{x:14,y:oy+size/2,'text-anchor':'middle',transform:`rotate(-90 14 ${oy+size/2})`,class:'map-plot-text'},'y →');
+  const stored=new Set(frame.inserted),moved=new Set(frame.moved);
+  for(const p of points){if(!stored.has(p.id))continue;const x=sx(p.x),y=sy(p.y),isMoved=moved.has(p.id);if(isMoved)append(svg,'circle',{cx:x,cy:y,r:11,fill:'#f7ca64','fill-opacity':.20});append(svg,'circle',{cx:x,cy:y,r:isMoved?5.3:4.4,fill:isMoved?'#ffcb69':'#7bc7f6',stroke:'#102b3d','stroke-width':1.35});}
+  if(frame.pid && !stored.has(frame.pid)){const p=byId.get(frame.pid),x=sx(p.x),y=sy(p.y);append(svg,'circle',{cx:x,cy:y,r:13,fill:'#fdaf6e','fill-opacity':.16,stroke:'#ffc28b','stroke-width':1.7,'stroke-dasharray':'4 3'});append(svg,'circle',{cx:x,cy:y,r:5.3,fill:'#ffa65c',stroke:'#ffffff','stroke-width':1.4});let dx=x>ox+size-36?-32:13,dy=y<oy+28?23:-12;append(svg,'text',{x:x+dx,y:y+dy,fill:'#ffd7ae','font-size':11,'font-weight':750},`P${p.id}`)}
+  append(svg,'text',{x:ox+6,y:oy+16,class:'map-plot-text'},'ROOT / R');$('boundsText').textContent=`[${root.x0}, ${root.y0}] – [${root.x1}, ${root.y1}]`;
+}
+function renderTree(frame){const root=frame.tree,all=[];let leafIdx=0,maxDepth=0;
+  function measure(n){maxDepth=Math.max(maxDepth,n.depth);if(!n.children){n._px=leafIdx++;all.push(n)}else{n.children.forEach(measure);all.push(n)}}measure(root);
+  const width=Math.max(595,leafIdx*84+38),height=Math.max(345,(maxDepth+1)*91+65),baseX=38,span=width-76;
+  function place(n){if(!n.children)n._x=baseX+(n._px+.5)/leafIdx*span;else{n.children.forEach(place);n._x=n.children.reduce((a,c)=>a+c._x,0)/n.children.length}n._y=48+n.depth*91}place(root);
+  const svg=$('treeSvg');svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('width',width);svg.setAttribute('height',height);
+  append(svg,'rect',{x:0,y:0,width,height,fill:'#f9fbfd'});
+  function edges(n){if(n.children){for(const child of n.children){append(svg,'path',{d:`M${n._x} ${n._y+19} C${n._x} ${n._y+47} ${child._x} ${child._y-48} ${child._x} ${child._y-19}`,stroke:'#c6d7df','stroke-width':1.8,fill:'none'});edges(child)}}}edges(root);
+  function nodes(n){const sel=frame.active===n.id,leaf=!n.children,splitHighlight=frame.kind==='split'&&sel;
+    append(svg,'rect',{x:n._x-33,y:n._y-21,width:66,height:43,rx:9,fill:sel?splitHighlight?'#fff0d1':'#ddf7ee':leaf?'#ffffff':'#e7eef2',stroke:sel?splitHighlight?'#e6aa4a':'#19aa90':leaf?'#b9d3de':'#cbd8e0','stroke-width':sel?2.4:1.25});
+    append(svg,'text',{x:n._x,y:n._y-4,'text-anchor':'middle',class:'tree-label'},n.id==='R'?'根节点':n.id.split('/').at(-1));
+    append(svg,'text',{x:n._x,y:n._y+12,'text-anchor':'middle',class:leaf?'tree-count':'tree-branch'},leaf?`${n.ids.length} / ${capacity}`:'4 个子节点');
+    if(sel)append(svg,'circle',{cx:n._x+31,cy:n._y-19,r:4,fill:splitHighlight?'#e9a943':'#16a28c',stroke:'#fff','stroke-width':1});
+    if(n.children)n.children.forEach(nodes)}nodes(root);
+  $('numLeaf').textContent=leaves(root).length;$('leafStats').textContent=`${leaves(root).filter(n=>n.ids.length).length} 个非空 / ${leaves(root).length} 个叶子`;
+  const selected=frame.active?findNode(root,frame.active):null;$('targetPath').textContent=selected?selected.id:'—';$('pathDetail').textContent=frame.path?.length?`定位路径：${frame.path.join(' → ')}`:'NW 左上 · NE 右上 · SW 左下 · SE 右下';
+  if(selected){const wrap=$('treeScroll');const targetX=selected._x;let desired=targetX-wrap.clientWidth/2;wrap.scrollLeft=Math.max(0,Math.min(width-wrap.clientWidth,desired))}else {$('treeScroll').scrollLeft=Math.max(0,(width-$('treeScroll').clientWidth)/2);}
+}
+const typeText={start:'初始化',locate:'定位叶子',retry:'重新定位',full:'容量已满',split:'四等分 / 重分配',insert:'插入成功',done:'构建完成'};
+function render(){const f=frames[pos];if(!f)return;renderSpace(f);renderTree(f);$('numInserted').textContent=f.inserted.length;$('numSplit').textContent=f.splits;$('stageType').textContent=typeText[f.kind];$('stageType').className='event-type '+f.kind;$('stageText').textContent=f.label;$('stepCounter').textContent=String(pos+1).padStart(2,'0')+' / '+String(frames.length).padStart(2,'0');$('timeline').value=pos;$('prev').disabled=pos===0;$('next').disabled=pos===frames.length-1;$('restart').disabled=pos===0;$('play').textContent=timer?'Ⅱ 暂停':'▶ 自动播放';$('play').setAttribute('aria-label',timer?'暂停动画':'自动播放');}
+function stop(){if(timer!==null){clearTimeout(timer);timer=null}}
+function jump(n){pos=Math.max(0,Math.min(frames.length-1,n));if(pos===frames.length-1)stop();render()}
+function tick(){if(timer===null)return;if(pos>=frames.length-1){stop();render();return}jump(pos+1);if(timer!==null)timer=setTimeout(tick,+$('speed').value)}
+function play(){if(timer!==null){stop();render();return}if(pos===frames.length-1)pos=0;timer=setTimeout(tick,+$('speed').value);render()}
+$('scenario').addEventListener('change',generate);$('capacity').addEventListener('click',e=>{const b=e.target.closest('button[data-cap]');if(!b)return;capacity=+b.dataset.cap;for(const btn of $('capacity').querySelectorAll('button'))btn.setAttribute('aria-pressed',btn===b?'true':'false');generate()});$('restart').addEventListener('click',()=>{stop();jump(0)});$('prev').addEventListener('click',()=>{stop();jump(pos-1)});$('next').addEventListener('click',()=>{stop();jump(pos+1)});$('play').addEventListener('click',play);$('timeline').addEventListener('input',e=>{stop();jump(+e.target.value)});$('speed').addEventListener('change',()=>{if(timer!==null){stop();play()}});
+window.__quad={getFrameCount:()=>frames.length,setFrame:n=>{stop();jump(n)},getFrameInfo:()=>({pos,kind:frames[pos].kind,inserted:frames[pos].inserted.length,splits:frames[pos].splits,leaves:leaves(frames[pos].tree).length}),getFramesSummary:()=>frames.map((f,i)=>({i,kind:f.kind,label:f.label,inserted:f.inserted.length,splits:f.splits}))};
+generate();
+})();
+</script>
+</body>
+</html>
