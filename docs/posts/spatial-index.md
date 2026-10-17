@@ -22,11 +22,9 @@ description: 四叉树点索引的构建流程：节点结构、叶子定位、�
 
 本文讨论**点四叉树**的一种实现：每个节点对应一个轴对齐矩形，区域沿水平和垂直中线划分为四个子区域；点的 ID 仅保存在叶子节点中。构建索引时，依次确定点所属的叶子；目标叶子达到容量阈值时，先分裂并重新分配已有点，再尝试插入当前点。
 
-根节点的范围通过遍历数据、分别求出 x 和 y 的最小值与最大值得到。下方交互演示可切换数据分布和叶子容量，使用自动播放、时间轴或逐步操作观察点的插入、节点分裂与重新分配；工程示例使用的容量为 **100**。
+根节点的范围通过遍历数据、分别求出 x 和 y 的最小值与最大值得到。交互演示页面可切换数据分布和叶子容量，使用自动播放、时间轴或逐步操作观察点的插入、节点分裂与重新分配；工程示例使用的容量为 **100**。
 
 <a href="/deep-into-gis/interactive/quadtree-interactive.html">单独打开完整演示</a>
-
-<iframe src="/deep-into-gis/interactive/quadtree-interactive.html" title="四叉树构建交互演示" loading="lazy" style="display:block;width:100%;height:1450px;border:0;border-radius:12px;"></iframe>
 
 ### 1. 节点记录空间范围和点的归属
 
