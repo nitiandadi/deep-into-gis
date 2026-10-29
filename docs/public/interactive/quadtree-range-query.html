@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#0a1322" />
+<title>四叉树矩形范围查询 · 交互动画</title>
+<style>
+:root{color-scheme:dark;--bg:#08111f;--panel:#101c2d;--panel2:#142338;--line:#293950;--text:#e8eef7;--muted:#93a6be;--amber:#f5b85e;--cyan:#6be3cc;--blue:#78b7ff;--red:#e99399;--purple:#b69bff}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 16% -6%,#152743 0%,transparent 40%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.5}
+button,select,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.app{width:min(1330px,100%);margin:auto;padding:28px 28px 32px}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin:0 0 20px}
+.kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);font-weight:750;margin:0 0 10px}
+h1{font-size:clamp(24px,2.6vw,32px);letter-spacing:-.035em;line-height:1.2;margin:0 0 11px;font-weight:750}
+.lede{margin:0;color:var(--muted);max-width:710px;font-size:13px}
+.top-badge{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid #2a4c53;color:var(--cyan);background:#122c31;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:650}
+.top-badge i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.toolbar{display:flex;flex-wrap:wrap;align-items:end;gap:10px 16px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.control{display:flex;flex-direction:column;gap:6px;min-width:142px}
+.control label{font-size:11px;color:var(--muted);font-weight:600}
+select{height:34px;border:1px solid #374a63;border-radius:7px;background:#0b182a;color:var(--text);padding:0 30px 0 11px;min-width:144px}
+.toolbar .divider-v{height:34px;width:1px;background:var(--line);margin:0 2px}
+.preset-row{display:flex;align-items:center;flex-wrap:wrap;gap:7px;flex:1}
+.preset-row .field-label{width:100%;font-size:11px;color:var(--muted);font-weight:600;margin-bottom:0}
+.preset{background:#17273d;color:#aebed1;border:1px solid #34455d;border-radius:7px;padding:7px 10px;font-size:12px;transition:background .16s,border .16s}
+.preset.active{background:#493820;color:#ffcf87;border-color:#af7b38}
+.preset:hover{border-color:#7186a4}
+.layout{display:grid;grid-template-columns:minmax(0,1.49fr) minmax(340px,1fr);gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;min-width:0;overflow:hidden}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 17px 10px}
+.panel-name{font-weight:750;font-size:13px;letter-spacing:.01em}
+.small-note{font-size:11px;color:var(--muted)}
+.stage{padding:0 13px 10px;position:relative}
+#map{display:block;width:100%;height:515px;background:#0b1728;border:1px solid #25364d;border-radius:9px;touch-action:none;cursor:crosshair}
+.map-tip{position:absolute;left:26px;bottom:23px;pointer-events:none;border:1px solid #32455e;background:#0d1b2dcc;color:#b3c4d7;padding:6px 9px;border-radius:7px;font-size:11px;backdrop-filter:blur(5px)}
+.coordinate{font-size:11px;color:#98b1cb;text-align:right;padding:0 15px 14px;font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;column-gap:17px;row-gap:9px;border-top:1px solid var(--line);padding:13px 16px 15px;color:#a8b9cc;font-size:11px}
+.legend span{display:flex;align-items:center;gap:7px}
+.swatch{width:9px;height:9px;border-radius:50%;display:inline-block;background:#8ea4bd;flex-shrink:0}
+.swatch.query{height:10px;width:17px;border:2px solid var(--amber);background:#f5b85e28;border-radius:2px}
+.swatch.active{background:var(--purple)}.swatch.hit{background:var(--cyan)}.swatch.rejected{background:#e99584}.swatch.pruned{background:#a55565}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.step-card{padding:18px 19px 18px;min-height:252px}
+.meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.phase{font-size:11px;border-radius:999px;padding:5px 10px;line-height:1;font-weight:750;color:#b6c9ff;background:#26355b;border:1px solid #44578b}
+.step-count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.step-card h2{font-size:20px;letter-spacing:-.025em;line-height:1.35;margin:0 0 11px}
+.step-card p{color:#bac9da;font-size:13px;line-height:1.8;margin:0;min-height:76px}
+.path{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.subhead{font-size:11px;color:var(--muted);font-weight:650;margin-bottom:8px}
+.breadcrumbs{display:flex;gap:5px;flex-wrap:wrap;min-height:24px}
+.crumb{font-size:11px;background:#22344a;color:#c7d9ef;border:1px solid #354f68;border-radius:5px;padding:3px 7px}
+.crumb:last-child{border-color:#7b73c8;color:#ddd3ff;background:#302a55}
+.crumb-arrow{font-size:12px;color:#6c819a;align-self:center}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.stat{background:#14253a;border:1px solid #2b4059;border-radius:9px;padding:11px 9px 9px;min-width:0}
+.stat strong{display:block;font-size:23px;line-height:1.2;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat small{display:block;color:#93a8c0;font-size:10px;margin-top:7px;white-space:nowrap}
+.stat:nth-child(1) strong{color:var(--blue)}.stat:nth-child(2) strong{color:var(--red)}.stat:nth-child(3) strong{color:var(--amber)}.stat:nth-child(4) strong{color:var(--cyan)}
+.code-panel{background:#0b1829;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.code-title{font-size:11px;color:#9fb5cf;padding:11px 13px 9px;border-bottom:1px solid #2b3b53;display:flex;align-items:center;justify-content:space-between}
+.code-title em{font-style:normal;color:#6f8dad}
+.code-lines{padding:9px 0 11px;font-size:11.4px;line-height:1.8;font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;overflow:auto}
+.code-line{display:flex;white-space:pre;min-width:max-content;padding:1px 12px 1px 0;color:#a2b5ca;border-left:3px solid transparent}
+.code-line.active{background:#28445d6b;border-left-color:#79c6fa;color:#e4f6ff}
+.line-n{display:inline-block;min-width:35px;padding-right:10px;text-align:right;color:#60778e;user-select:none}
+.code-content .key{color:#b8a5ff}.code-content .method{color:#92d2ff}.code-content .token{color:#eed097}
+.transport{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 18px 15px}
+.playback-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.button-row{display:flex;gap:8px;align-items:center}
+.btn{min-height:36px;background:#192940;border:1px solid #3b5069;border-radius:7px;padding:0 12px;color:#d5e2f0;font-weight:650;font-size:12px}
+.btn:hover{background:#253a54}
+.btn.primary{background:#eab164;color:#182130;border-color:#f9d397;font-weight:800;min-width:101px}
+.btn.primary:hover{background:#f6c07a}
+.speed{display:flex;align-items:center;gap:8px;color:#9fb0c4;font-size:11px}
+.speed select{min-width:94px;width:94px;height:32px}
+.timeline{display:flex;align-items:center;gap:12px;margin-top:13px}
+.timeline input{width:100%;accent-color:var(--amber);cursor:pointer}
+.timeline-number{color:#8fa8bf;font-size:11px;min-width:98px;text-align:right;font-variant-numeric:tabular-nums}
+.callout{margin-top:14px;border-radius:10px;padding:13px 16px;background:#102538;border:1px solid #2a5262;display:flex;align-items:flex-start;gap:11px;color:#b7cbd9;font-size:12px;line-height:1.7}
+.callout strong{color:#84e4d2}.callout .symbol{font-size:17px;color:var(--cyan);line-height:1.4}
+.footer{text-align:center;color:#607994;font-size:11px;margin:17px 0 0}
+@media (max-width:1030px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;align-items:start}.step-card{grid-row:span 2}.code-panel{grid-column:2}.stat-grid{grid-column:2;grid-template-columns:repeat(2,1fr)}#map{height:470px}}
+@media (max-width:680px){.app{padding:16px 11px 22px}.header{margin-bottom:16px}.top-badge{display:none}.toolbar{padding:13px;gap:10px}.toolbar .divider-v{display:none}.control{min-width:calc(50% - 5px);flex:1}.control select{width:100%;min-width:0}.preset-row{flex-basis:100%}.layout{gap:10px}.panel-head{padding:12px}.stage{padding:0 8px 8px}#map{height:360px}.side{display:flex;gap:10px}.step-card{min-height:0;padding:15px}.step-card p{min-height:0}.stat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.stat strong{font-size:20px}.stat small{font-size:9px;white-space:normal}.transport{padding:13px 10px}.playback-top{gap:8px}.button-row{width:100%;justify-content:space-between}.btn{padding:0 10px}.speed{margin-left:auto}.map-tip{font-size:10px;left:16px;bottom:16px}.timeline-number{min-width:71px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <div>
+      <div class="kicker">GIS ALGORITHMS / QUADTREE VISUAL LAB</div>
+      <h1>四叉树的矩形范围查询</h1>
+      <p class="lede">观察查询矩形如何穿过空间层级：先定位最小相关节点，再逐级剪枝，最后只对候选叶子里的点做精确判断。</p>
+    </div>
+    <div class="top-badge"><i></i> 可交互 · 查询过程</div>
+  </header>
+  <section class="toolbar" aria-label="演示设置">
+    <div class="control"><label for="dataset">点数据分布</label><select id="dataset"><option value="uniform">均匀随机</option><option value="cluster">空间聚簇</option><option value="diagonal">斜向带状</option></select></div>
+    <div class="control"><label for="capacity">叶子容量 M</label><select id="capacity"><option value="3">3 · 密集划分</option><option value="5" selected>5 · 常规划分</option><option value="9">9 · 较少划分</option></select></div>
+    <div class="preset-row"><div class="field-label">查询矩形预设 · 或直接拖动画布中的橙色框</div>
+      <button class="preset active" data-preset="cross">跨多个象限</button>
+      <button class="preset" data-preset="small">局部查询</button>
+      <button class="preset" data-preset="boundary">跨中线</button>
+      <button class="preset" data-preset="outer">超出根范围</button>
+      <button class="preset" data-preset="all">全范围</button>
+    </div>
+  </section>
+  <section class="layout">
+    <div class="panel">
+      <div class="panel-head"><span class="panel-name">空间索引视图</span><span class="small-note" id="tree-meta">已构建四叉树</span></div>
+      <div class="stage"><canvas id="map" aria-label="显示点、四叉树节点划分和可拖动的范围查询矩形"></canvas><div class="map-tip">拖动查询框移动 · 拖动四角调整大小</div></div>
+      <div class="coordinate" id="coordinate">查询范围：</div>
+      <div class="legend">
+        <span><i class="swatch query"></i> 查询矩形</span><span><i class="swatch active"></i> 当前节点</span>
+        <span><i class="swatch pruned"></i> 剪枝区域</span><span><i class="swatch hit"></i> 命中点</span><span><i class="swatch rejected"></i> 已检查未命中</span>
+      </div>
+    </div>
+    <aside class="side">
+      <section class="panel step-card" aria-live="polite">
+        <div class="meta"><span class="phase" id="phase">准备就绪</span><span class="step-count" id="step-count">步骤 0 / 0</span></div>
+        <h2 id="step-title">准备查询</h2>
+        <p id="step-description">点击“自动播放”或“下一步”，看查询矩形如何排除无关子树。</p>
+        <div class="path"><div class="subhead">递归 / 定位路径</div><div class="breadcrumbs" id="breadcrumbs"><span class="small-note">尚未进入节点</span></div></div>
+      </section>
+      <div class="stat-grid" aria-label="查询实时统计">
+        <div class="stat"><strong id="n-visited">0</strong><small>已访问节点</small></div>
+        <div class="stat"><strong id="n-pruned">0</strong><small>剪枝子树</small></div>
+        <div class="stat"><strong id="n-checked">0</strong><small>精确检查点</small></div>
+        <div class="stat"><strong id="n-match">0</strong><small>查询命中点</small></div>
+      </div>
+      <section class="code-panel" aria-label="范围查询核心伪代码">
+        <div class="code-title"><span>C++ 思路 · CollectPointsInRange()</span><em>当前执行行高亮</em></div>
+        <div class="code-lines" id="code-lines">
+          <div class="code-line" data-line="1"><span class="line-n">01</span><span class="code-content">overlap = <span class="method">Intersect</span>(range, node);</span></div>
+          <div class="code-line" data-line="2"><span class="line-n">02</span><span class="code-content"><span class="key">if</span> (!overlap) <span class="key">return</span>;</span></div>
+          <div class="code-line" data-line="3"><span class="line-n">03</span><span class="code-content"><span class="key">if</span> (node.<span class="method">IsLeaf</span>()) {</span></div>
+          <div class="code-line" data-line="4"><span class="line-n">04</span><span class="code-content">  <span class="key">for</span> (id : node.featureIds) {</span></div>
+          <div class="code-line" data-line="5"><span class="line-n">05</span><span class="code-content">    <span class="key">if</span> (<span class="method">PointInRange</span>(point, range))</span></div>
+          <div class="code-line" data-line="6"><span class="line-n">06</span><span class="code-content">      result.<span class="method">push_back</span>(point);</span></div>
+          <div class="code-line" data-line="7"><span class="line-n">07</span><span class="code-content">  }</span></div>
+          <div class="code-line" data-line="8"><span class="line-n">08</span><span class="code-content">} <span class="key">else</span> {</span></div>
+          <div class="code-line" data-line="9"><span class="line-n">09</span><span class="code-content">  <span class="key">for</span> (child : <span class="method">OverlappingQuadrants</span>)</span></div>
+          <div class="code-line" data-line="10"><span class="line-n">10</span><span class="code-content">    <span class="method">CollectPointsInRange</span>(child, range);</span></div>
+          <div class="code-line" data-line="11"><span class="line-n">11</span><span class="code-content">}</span></div>
+        </div>
+      </section>
+    </aside>
+  </section>
+  <section class="transport" aria-label="动画播放器">
+    <div class="playback-top">
+      <div class="button-row"><button id="restart" class="btn" title="回到最初">↺ 重置</button><button id="prev" class="btn" title="上一步">← 上一步</button><button id="play" class="btn primary" title="播放或暂停">▶ 自动播放</button><button id="next" class="btn" title="下一步">下一步 →</button></div>
+      <div class="speed"><label for="speed">速度</label><select id="speed"><option value="1300">0.5×</option><option value="790" selected>1×</option><option value="430">2×</option><option value="225">4×</option></select></div>
+    </div>
+    <div class="timeline"><input type="range" id="timeline" min="0" max="1" value="0" aria-label="查询过程时间轴"><span class="timeline-number" id="timeline-number">0 / 0</span></div>
+  </section>
+  <div class="callout"><span class="symbol">✦</span><span id="insight"><strong>理解关键：</strong> 节点矩形与查询矩形相交，只说明该节点可能包含结果；必须进入叶子，用点坐标作最终判断。</span></div>
+  <p class="footer">坐标约定：x → 右，y → 下；边界为闭区间；中线上的点存入右侧／下侧子区域。查询过程不修改四叉树。</p>
+</main>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const canvas = $('map'), ctx = canvas.getContext('2d');
+  const PRESETS = {
+    cross: {left:29,top:21,right:76,bottom:68},
+    small: {left:12,top:11,right:36,bottom:39},
+    boundary: {left:46,top:39,right:68,bottom:62},
+    outer: {left:-12,top:57,right:34,bottom:109},
+    all: {left:0,top:0,right:100,bottom:100}
+  };
+  let seed = 20261020, points=[], root=null, nodes=[], query={...PRESETS.cross};
+  let events=[], stepIndex=0, timer=null, pointerState=null, geometry=null;
+  const clone = (r) => ({...r});
+  const clamp = (v,lo,hi) => Math.max(lo,Math.min(hi,v));
+  const round = (n) => Math.round(n*10)/10;
+  function rng(initial) { let state=initial>>>0; return () => {state=(1664525*state+1013904223)>>>0;return state/4294967296;}; }
+  function gaussian(random){return (random()+random()+random()+random()+random()+random()-3)/3;}
+  function generatePoints(){
+    const random = rng(seed), mode=$('dataset').value, out=[];
+    const count= mode==='uniform'?76:mode==='cluster'?88:75;
+    for(let i=0;i<count;i++){
+      let x,y;
+      if(mode==='cluster'){
+        const clusters=[[23,23],[74,28],[52,76]];
+        const [cx,cy]=clusters[i%3];
+        x=cx+gaussian(random)*39;y=cy+gaussian(random)*35;
+      } else if(mode==='diagonal') {
+        const t=9+random()*82;
+        x=t+gaussian(random)*14;y=16+t*.68+gaussian(random)*16;
+      } else {x=2+random()*96;y=2+random()*96;}
+      out.push({id:i+1,x:round(clamp(x,0.5,99.5)),y:round(clamp(y,0.5,99.5))});
+    }
+    return out;
+  }
+  const midpoint = (a,b) => (a+b)/2;
+  function addNode(bounds,depth,parent,quad){
+    const node={id:nodes.length+1,bounds:clone(bounds),depth,parent,quad,children:null,pts:[]};
+    nodes.push(node);return node;
+  }
+  function quadrant(node,pt){
+    const b=node.bounds,mx=midpoint(b.left,b.right),my=midpoint(b.top,b.bottom);
+    // UL, UR, LR, LL — midline belongs to right/bottom.
+    return pt.x<mx ? (pt.y<my?0:3) : (pt.y<my?1:2);
+  }
+  function split(node){
+    const b=node.bounds,mx=midpoint(b.left,b.right),my=midpoint(b.top,b.bottom);
+    node.children=[
+      addNode({left:b.left,top:b.top,right:mx,bottom:my},node.depth+1,node,'左上'),
+      addNode({left:mx,top:b.top,right:b.right,bottom:my},node.depth+1,node,'右上'),
+      addNode({left:mx,top:my,right:b.right,bottom:b.bottom},node.depth+1,node,'右下'),
+      addNode({left:b.left,top:my,right:mx,bottom:b.bottom},node.depth+1,node,'左下')
+    ];
+    const old=node.pts;node.pts=[];
+    old.forEach((pt)=>insert(node.children[quadrant(node,pt)],pt));
+  }
+  function insert(node,pt){
+    if(node.children){insert(node.children[quadrant(node,pt)],pt);return;}
+    const capacity=Number($('capacity').value);
+    if(node.pts.length<capacity || node.depth>=7){node.pts.push(pt);return;}
+    split(node);insert(node.children[quadrant(node,pt)],pt);
+  }
+  function buildTree(){
+    points=generatePoints();nodes=[];
+    root=addNode({left:0,top:0,right:100,bottom:100},0,null,'根');
+    points.forEach((pt)=>insert(root,pt));
+    const leaves=nodes.filter(n=>!n.children).length;
+    $('tree-meta').textContent=`${points.length} 个点 · ${nodes.length} 个节点 · ${leaves} 个叶子`;
+  }
+  function intersection(a,b){
+    const r={left:Math.max(a.left,b.left),top:Math.max(a.top,b.top),right:Math.min(a.right,b.right),bottom:Math.min(a.bottom,b.bottom)};
+    return (r.left>r.right||r.top>r.bottom)?null:r;
+  }
+  function inside(p,r){return p.x>=r.left&&p.x<=r.right&&p.y>=r.top&&p.y<=r.bottom;}
+  function candidates(node,overlap){
+    if(!node.children)return [];
+    const b=node.bounds,mx=midpoint(b.left,b.right),my=midpoint(b.top,b.bottom);
+    const left=overlap.left<mx,right=overlap.right>=mx,top=overlap.top<my,bottom=overlap.bottom>=my;
+    return node.children.filter((c,i)=> (i===0&&left&&top)||(i===1&&right&&top)||(i===2&&right&&bottom)||(i===3&&left&&bottom));
+  }
+  const nodeLabel=(n)=> n ? `N${n.id}${n.quad==='根'?'（根）':`（${n.quad}）`}` : '无';
+  function nodePath(node){const a=[];let n=node;while(n){a.unshift(n.id);n=n.parent;}return a;}
+  function buildEvents(){
+    const state={visited:new Set(),pruned:new Set(),checked:new Set(),matches:new Set(),rejected:new Set(),stack:[],activeNode:null,activePoint:null,activeChildren:[],overlap:null};
+    events=[];
+    function record(type,phase,title,description,line=0,extra={}){
+      events.push({type,phase,title,description,line,...extra,
+        state:{visited:new Set(state.visited),pruned:new Set(state.pruned),checked:new Set(state.checked),matches:new Set(state.matches),rejected:new Set(state.rejected),stack:state.stack.slice(),activeNode:state.activeNode,activePoint:state.activePoint,activeChildren:state.activeChildren.slice(),overlap:state.overlap?clone(state.overlap):null}
+      });
+    }
+    record('ready','准备阶段','准备查询',`四叉树已构建，包含 ${points.length} 个点。查询矩形可以跨越多个象限；先找到最小相关节点，再递归收集。`);
+    let cursor=root,overlap=null;
+    while(cursor){
+      state.activeNode=cursor.id;state.activePoint=null;state.activeChildren=[];state.stack=nodePath(cursor);
+      overlap=intersection(query,cursor.bounds);state.overlap=overlap;
+      record('locate','定位起点',`定位：检查 ${nodeLabel(cursor)}`,overlap?`查询矩形与 ${nodeLabel(cursor)} 相交，交集为 [${round(overlap.left)}, ${round(overlap.top)}] ～ [${round(overlap.right)}, ${round(overlap.bottom)}]。`:`查询矩形与 ${nodeLabel(cursor)} 无交集，因此整棵树无需检查。`,1);
+      if(!overlap){
+        record('no-intersection','结束查询','查询范围与根节点不相交','可以直接返回空结果；无需递归遍历任何叶子。',2);
+        finish();return;
+      }
+      if(!cursor.children){
+        record('found','定位起点','找到起始叶子',`${nodeLabel(cursor)} 已经是叶子，从这个叶子开始检查点。`,3);
+        break;
+      }
+      const chosen=candidates(cursor,overlap);
+      state.activeChildren=chosen.map(n=>n.id);
+      if(chosen.length!==1){
+        record('found','定位起点','找到最小相关节点',`交集同时覆盖 ${chosen.length} 个子象限，不能再沿单一路径下降。以 ${nodeLabel(cursor)} 作为递归起点。`,9);
+        break;
+      }
+      for(const sibling of cursor.children)if(sibling!==chosen[0])state.pruned.add(sibling.id);
+      record('narrow','定位起点',`只进入 ${chosen[0].quad}象限`,`交集只涉及一个子象限：进入 ${nodeLabel(chosen[0])}。其他 ${cursor.children.length-1} 个子树无关，直接剪掉。`,9);
+      cursor=chosen[0];
+    }
+    state.stack=[];
+    state.activeChildren=[];
+    function collect(node){
+      state.stack.push(node.id);state.activeNode=node.id;state.activePoint=null;state.activeChildren=[];
+      state.overlap=intersection(node.bounds,query);
+      state.visited.add(node.id);
+      record('enter','递归收集',`访问 ${nodeLabel(node)}`,`检查当前节点是否与查询矩形相交。${node.children?'这是内部节点，需要筛选相交子树。':'这是叶子节点，接下来检查其中的点。'}`,1);
+      if(!state.overlap){
+        state.pruned.add(node.id);
+        record('prune','递归收集','相交检查失败：剪枝',`${nodeLabel(node)} 与查询矩形没有交集，立即返回，不遍历任何后代。`,2);
+      }else if(!node.children){
+        record('leaf','叶子筛选',`检查叶子的 ${node.pts.length} 个点`,`节点范围相交不代表每个点都命中。必须使用原始点坐标，对每个 ID 执行闭区间判断。`,4);
+        for(const p of node.pts){
+          state.activePoint=p.id;state.checked.add(p.id);
+          const hit=inside(p,query);
+          (hit?state.matches:state.rejected).add(p.id);
+          const xyz=`P${p.id} (${p.x.toFixed(1)}, ${p.y.toFixed(1)})`;
+          record('point','叶子筛选',hit?`✓ 命中 ${xyz}`:`× 排除 ${xyz}`,hit?'点的 x、y 坐标都落在查询矩形闭区间内，将该点加入结果集。':'虽然所属叶子与查询矩形相交，但这个点位于矩形外，不能返回。',hit?6:5);
+        }
+      }else{
+        const overlap=intersection(query,node.bounds),chosen=candidates(node,overlap);
+        const skipped=node.children.filter(n=>!chosen.includes(n));
+        skipped.forEach(n=>state.pruned.add(n.id));
+        state.activeChildren=chosen.map(n=>n.id);
+        record('select','候选子树',`保留 ${chosen.length} 个候选子树`,`交集覆盖 ${chosen.map(n=>n.quad).join('、')||'无'}象限；${skipped.length} 个不相关子树直接剪枝。随后只递归访问保留的分支。`,9);
+        state.activeChildren=[];
+        for(const c of chosen)collect(c);
+      }
+      state.activePoint=null;state.activeNode=node.id;state.overlap=intersection(node.bounds,query);
+      record('return','递归返回',`返回 ${nodeLabel(node)}`,`该节点的候选分支${node.children?'全部处理完毕':'和叶子点已处理完毕'}，返回上一层继续。当前已找到 ${state.matches.size} 个命中点。`,node.children?10:7);
+      state.stack.pop();
+    }
+    collect(cursor);
+    finish();
+    function finish(){
+      state.stack=[];state.activeNode=null;state.activePoint=null;state.activeChildren=[];state.overlap=null;
+      const expected=points.filter(p=>inside(p,query)).map(p=>p.id).sort((a,b)=>a-b);
+      const actual=[...state.matches].sort((a,b)=>a-b);
+      if(expected.join(',')!==actual.join(','))throw new Error('查询结果与全量遍历不一致');
+      const reduction=points.length ? Math.round(100*(1-state.checked.size/points.length)):0;
+      record('done','查询完成','查询完成 · 结果已验证',`共找到 ${actual.length} 个点；只精确检查了 ${state.checked.size}/${points.length} 个点，比全量遍历少检查约 ${reduction}% 的点。此比例不包含节点遍历开销。`);
+    }
+  }
+  function currentEvent(){return events[stepIndex]||events[0];}
+  function stop(){if(timer){clearInterval(timer);timer=null;} updatePlayButton();}
+  function play(){
+    if(timer){stop();return;}
+    if(stepIndex>=events.length-1)setStep(0);
+    timer=setInterval(()=>{if(stepIndex>=events.length-1){stop();return;}setStep(stepIndex+1);if(stepIndex>=events.length-1)stop();},Number($('speed').value));
+    updatePlayButton();
+  }
+  function updatePlayButton(){$('play').textContent=timer?'❚❚ 暂停播放':'▶ 自动播放';}
+  function setStep(index){
+    stepIndex=clamp(Number(index)||0,0,events.length-1);const event=currentEvent(),s=event.state;
+    $('phase').textContent=event.phase;
+    $('step-title').textContent=event.title;
+    $('step-description').textContent=event.description;
+    $('step-count').textContent=`步骤 ${stepIndex} / ${events.length-1}`;
+    $('timeline-number').textContent=`${stepIndex} / ${events.length-1}`;
+    $('timeline').max=String(events.length-1);$('timeline').value=String(stepIndex);
+    $('n-visited').textContent=s.visited.size;
+    $('n-pruned').textContent=s.pruned.size;
+    $('n-checked').textContent=s.checked.size;
+    $('n-match').textContent=s.matches.size;
+    $('breadcrumbs').replaceChildren();
+    if(!s.stack.length){const note=document.createElement('span');note.className='small-note';note.textContent=event.type==='done'?'递归已完成':'尚未进入节点';$('breadcrumbs').append(note);}
+    else{s.stack.forEach((id,i)=>{if(i){const arrow=document.createElement('span');arrow.className='crumb-arrow';arrow.textContent='›';$('breadcrumbs').append(arrow);}const span=document.createElement('span');span.className='crumb';span.textContent=`N${id}`;$('breadcrumbs').append(span);});}
+    document.querySelectorAll('.code-line').forEach(line=>line.classList.toggle('active',Number(line.dataset.line)===event.line));
+    if(event.type==='done'){
+      const reduction=Math.round(100*(1-s.checked.size/points.length));
+      $('insight').innerHTML=`<strong>与全量遍历对比：</strong> 全量遍历检查 ${points.length} 个点；本次四叉树只检查 ${s.checked.size} 个点（减少 ${reduction}%）。结果 ID 与全量遍历逐一比对一致。注意节点求交与递归本身也有开销，点检查减少不等于耗时同比例减少。`;
+    }else if(['point','leaf','return'].includes(event.type)){
+      $('insight').innerHTML='<strong>叶子精筛：</strong> 节点相交只是粗筛；命中结果必须依据原始点的 x、y 坐标做闭区间判断。';
+    }else{
+      $('insight').innerHTML='<strong>范围求交与剪枝：</strong> 每次只继续检查可能与查询矩形相交的象限；跳过一个节点，就能同时排除整棵子树里的点。';
+    }
+    draw();
+  }
+  function rebuild({changePoints=false}={}){stop();if(changePoints)seed+=101;buildTree();buildEvents();setStep(0);}
+  function setupCanvas(){
+    const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;
+    const ratio=window.devicePixelRatio||1;
+    canvas.width=Math.round(rect.width*ratio);canvas.height=Math.round(rect.height*ratio);
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    const w=rect.width,h=rect.height;
+    const scale=Math.min((w-72)/130,(h-62)/130);
+    geometry={w,h,s:scale,x0:w/2-50*scale,y0:h/2-50*scale};
+    draw();
+  }
+  function X(val){return geometry.x0+val*geometry.s;}
+  function Y(val){return geometry.y0+val*geometry.s;}
+  function world(pos){return {x:(pos.x-geometry.x0)/geometry.s,y:(pos.y-geometry.y0)/geometry.s};}
+  function rectOf(b){return [X(b.left),Y(b.top),(b.right-b.left)*geometry.s,(b.bottom-b.top)*geometry.s];}
+  function drawRect(b,fill,stroke,width=1,dash=[]){
+    ctx.save();const [x,y,w,h]=rectOf(b);if(fill){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h);}if(stroke){ctx.setLineDash(dash);ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.strokeRect(x+.5,y+.5,Math.max(0,w-1),Math.max(0,h-1));}ctx.restore();
+  }
+  function roundRect(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();}
+  function draw(){
+    if(!geometry||!root)return;
+    const {w,h}=geometry,s=currentEvent()?.state;
+    ctx.clearRect(0,0,w,h);
+    const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#0f2035');bg.addColorStop(1,'#081727');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+    // Soft world grid and coordinate tick marks.
+    ctx.strokeStyle='#19314b';ctx.lineWidth=.7;
+    for(let c=-10;c<=110;c+=10){ctx.beginPath();ctx.moveTo(X(c),Y(-13));ctx.lineTo(X(c),Y(113));ctx.stroke();ctx.beginPath();ctx.moveTo(X(-13),Y(c));ctx.lineTo(X(113),Y(c));ctx.stroke();}
+    drawRect(root.bounds,'#ffffff04','#8097b2',2);
+    if(s){
+      for(const id of s.pruned){const n=nodes[id-1];drawRect(n.bounds,'#ef647d12',null);}
+      for(const id of s.visited){const n=nodes[id-1];drawRect(n.bounds,'#64adf108',null);}
+      for(const id of s.activeChildren){const n=nodes[id-1];drawRect(n.bounds,'#8aabff10','#75b3ff',1.3,[5,4]);}
+    }
+    for(const n of nodes){if(!n.children){drawRect(n.bounds,null,n.depth>4?'#39546f':'#3b5775',n.depth>4?.55:.8);}}
+    // Points: saved only in leaves.
+    const ancestorPruned = (pt) => {
+      if(!s)return false;
+      let leaf=root;
+      while(leaf.children)leaf=leaf.children[quadrant(leaf,pt)];
+      for(let node=leaf;node;node=node.parent)if(s.pruned.has(node.id))return true;
+      return false;
+    };
+    for(const p of points){
+      const matched=s?.matches.has(p.id),rejected=s?.rejected.has(p.id),current=s?.activePoint===p.id;
+      const pruned=ancestorPruned(p);
+      const color=matched?'#65e7ca':rejected?'#dd8d82':pruned?'#587086':'#9fb4cd';
+      ctx.beginPath();ctx.arc(X(p.x),Y(p.y),matched?4.1:current?3.8:2.9,0,2*Math.PI);ctx.fillStyle=color;ctx.globalAlpha=pruned&&!matched?.39:1;ctx.fill();ctx.globalAlpha=1;
+      if(matched){ctx.beginPath();ctx.arc(X(p.x),Y(p.y),7.6,0,Math.PI*2);ctx.strokeStyle='#6be3cc77';ctx.lineWidth=1.3;ctx.stroke();}
+      if(current){ctx.beginPath();ctx.arc(X(p.x),Y(p.y),10.5,0,Math.PI*2);ctx.strokeStyle=matched?'#6be3cc':'#f5b85e';ctx.lineWidth=2.3;ctx.stroke();}
+    }
+    // Active node and overlap are drawn above points, below query rectangle.
+    if(s?.activeNode){
+      const active=nodes[s.activeNode-1];drawRect(active.bounds,'#9f8aff14','#bca5ff',2.6);
+      if(s.overlap)drawRect(s.overlap,'#79e1ee12','#79dceb',1.6,[5,4]);
+      const bx=X(active.bounds.left),by=Y(active.bounds.top)-21;
+      const label=`N${active.id} · ${active.children?'内部节点':'叶子'}`;
+      ctx.font='600 10px ui-sans-serif, system-ui, sans-serif';
+      const lw=ctx.measureText(label).width+17;
+      const lx=clamp(bx,5,w-lw-5),ly=clamp(by,3,h-21);
+      roundRect(lx,ly,lw,19,5,'#4f4588');ctx.fillStyle='#f1e9ff';ctx.fillText(label,lx+8,ly+13);
+    }
+    // Query range, handles and label. The root can be clipped by an external range.
+    drawRect(query,'#f5b85e22','#f5b85e',2.3,[8,4]);
+    const handles=[[query.left,query.top],[query.right,query.top],[query.right,query.bottom],[query.left,query.bottom]];
+    for(const [xx,yy]of handles){ctx.fillStyle='#ffcf86';ctx.strokeStyle='#6c4d25';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(X(xx),Y(yy),5.5,0,Math.PI*2);ctx.fill();ctx.stroke();}
+    const label='查询范围 Q';ctx.font='700 11px ui-sans-serif,system-ui,sans-serif';
+    const bw=ctx.measureText(label).width+18,bx=clamp(X(query.left)+4,5,w-bw-5),by=clamp(Y(query.top)-26,3,h-24);
+    roundRect(bx,by,bw,22,6,'#76542a');ctx.fillStyle='#ffe1ad';ctx.fillText(label,bx+9,by+15);
+    ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#728da8';ctx.textAlign='center';
+    for(let v=0;v<=100;v+=25){ctx.fillText(v,X(v),Y(100)+18);}
+    ctx.textAlign='right';for(let v=0;v<=100;v+=25)ctx.fillText(v,X(0)-9,Y(v)+3);
+    ctx.textAlign='left';
+  }
+  function getPointer(e){const r=canvas.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+  function hitTest(e){
+    const p=getPointer(e),corners=[['nw',query.left,query.top],['ne',query.right,query.top],['se',query.right,query.bottom],['sw',query.left,query.bottom]];
+    for(const [type,x,y]of corners)if(Math.hypot(p.x-X(x),p.y-Y(y))<=14)return type;
+    const v=world(p);if(v.x>=query.left&&v.x<=query.right&&v.y>=query.top&&v.y<=query.bottom)return 'move';
+    return null;
+  }
+  function updateCoordinates(){$('coordinate').textContent=`查询范围 [${round(query.left)}, ${round(query.top)}] → [${round(query.right)}, ${round(query.bottom)}] （left, top, right, bottom）`;}
+  canvas.addEventListener('pointerdown',e=>{
+    const action=hitTest(e);if(!action)return;
+    stop();canvas.setPointerCapture(e.pointerId);
+    pointerState={action,origin:world(getPointer(e)),base:clone(query),moved:false};
+    e.preventDefault();
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(!pointerState){const type=hitTest(e);canvas.style.cursor=type==='move'?'grab':type?(type==='nw'||type==='se'?'nwse-resize':'nesw-resize'):'crosshair';return;}
+    const pt=world(getPointer(e)),a=pointerState,dx=pt.x-a.origin.x,dy=pt.y-a.origin.y,b=a.base;
+    let n=clone(b);
+    if(a.action==='move'){
+      n.left=clamp(b.left+dx,-14,114-(b.right-b.left));n.top=clamp(b.top+dy,-14,114-(b.bottom-b.top));
+      n.right=n.left+(b.right-b.left);n.bottom=n.top+(b.bottom-b.top);
+    }else{
+      if(a.action.includes('w'))n.left=clamp(b.left+dx,-14,b.right-4);
+      if(a.action.includes('e'))n.right=clamp(b.right+dx,b.left+4,114);
+      if(a.action.includes('n'))n.top=clamp(b.top+dy,-14,b.bottom-4);
+      if(a.action.includes('s'))n.bottom=clamp(b.bottom+dy,b.top+4,114);
+    }
+    a.moved=a.moved||Object.keys(n).some(k=>Math.abs(n[k]-b[k])>.03);
+    query=n;updateCoordinates();draw();e.preventDefault();
+  });
+  function finishDrag(e){
+    if(!pointerState)return;
+    const moved=pointerState.moved;pointerState=null;
+    if(moved){document.querySelectorAll('.preset').forEach(b=>b.classList.remove('active'));buildEvents();setStep(0);}
+    if(e&&canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
+  }
+  canvas.addEventListener('pointerup',finishDrag);canvas.addEventListener('pointercancel',finishDrag);
+  $('restart').addEventListener('click',()=>{stop();setStep(0);});
+  $('prev').addEventListener('click',()=>{stop();setStep(stepIndex-1);});
+  $('next').addEventListener('click',()=>{stop();setStep(stepIndex+1);});
+  $('play').addEventListener('click',play);
+  $('speed').addEventListener('change',()=>{if(timer){stop();play();}});
+  $('timeline').addEventListener('input',e=>{stop();setStep(Number(e.target.value));});
+  $('dataset').addEventListener('change',()=>rebuild());
+  $('capacity').addEventListener('change',()=>rebuild());
+  document.querySelectorAll('.preset').forEach(btn=>btn.addEventListener('click',()=>{
+    query=clone(PRESETS[btn.dataset.preset]);document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b===btn));
+    updateCoordinates();stop();buildEvents();setStep(0);
+  }));
+  window.addEventListener('keydown',e=>{
+    if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(document.activeElement?.tagName))return;
+    if(e.key==='ArrowRight'){e.preventDefault();stop();setStep(stepIndex+1);}
+    if(e.key==='ArrowLeft'){e.preventDefault();stop();setStep(stepIndex-1);}
+    if(e.key===' '){e.preventDefault();play();}
+  });
+  if(window.ResizeObserver)new ResizeObserver(setupCanvas).observe(canvas);else window.addEventListener('resize',setupCanvas);
+  buildTree();buildEvents();updateCoordinates();setStep(0);setupCanvas();
+  // A small test hook for local functional verification; no network dependency.
+  window.__quadtreeDemo={get state(){return {events:events.length,index:stepIndex,points:points.length,nodes:nodes.length,query:clone(query),last:events.at(-1)?.state};},goTo:setStep,selectPreset:(name)=>document.querySelector(`[data-preset="${name}"]`)?.click()};
+})();
+</script>
+</body>
+</html>
