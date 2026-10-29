@@ -122,8 +122,6 @@ for (const Point& point : points)
 
 下面的交互动画展示最小相关节点的定位、递归访问、子树剪枝和叶子点筛选。可拖动查询矩形，也可切换点分布、叶子容量、查询预设，并使用逐步播放或时间轴观察过程。动画使用少量示意点以便辨认节点；文末性能对比另用 10 万个点。
 
-<iframe class="range-query-demo" src="/deep-into-gis/interactive/quadtree-range-query.html" title="四叉树矩形范围查询交互动画"></iframe>
-
 <a href="/deep-into-gis/interactive/quadtree-range-query.html" target="_blank" rel="noopener noreferrer">单独打开范围查询动画</a>
 
 ### 1. 求查询范围与当前节点的交集
